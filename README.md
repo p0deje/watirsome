@@ -327,4 +327,4 @@ Watirsome.region_matcher = /^.+(Region|Helper)$/
 
 ### Copyright
 
-Copyright (c) 2013 Alex Rodionov. See LICENSE for details.
+Copyright (c) 2013 Alex Rodionov. See LICENSE.md for details.
