@@ -115,7 +115,7 @@ class Page
   include Watirsome
   
   div :layer, class: 'layer'
-  a :link, do |text| 
+  a :link do |text| 
     layer_div.a(text: text)
   end
 end
