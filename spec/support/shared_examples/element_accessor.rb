@@ -22,7 +22,8 @@ shared_examples_for :element_accessor do |tags|
 
       it 'finds element with custom locator' do
         element2 = stub('element')
-        watir.should_receive(:"#{tag}s").with(id: tag, class: tag).and_return([element, element2])
+        plural = Watirsome.pluralize(tag)
+        watir.should_receive(plural).with(id: tag, class: tag).and_return([element, element2])
         element.should_receive(:visible?).with(no_args).and_return(true)
         element2.should_receive(:visible?).with(no_args).and_return(false)
         accessor(tag, 4).should == element

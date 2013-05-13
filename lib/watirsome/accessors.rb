@@ -216,7 +216,7 @@ module Watirsome
           @browser.send(method, *watir_args)
         else
           plural = Watirsome.plural?(method)
-          method = :"#{method}s" unless plural
+          method = Watirsome.pluralize(method) unless plural
           elements = @browser.send(method, *watir_args)
           custom_args.first.each { |k, v| elements.to_a.select! { |e| e.send(:"#{k}?") == v } }
           plural ? elements : elements.first

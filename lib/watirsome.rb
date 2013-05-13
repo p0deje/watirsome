@@ -123,8 +123,8 @@ module Watirsome
     # Returns true if method is element accessor in plural form.
     #
     # @example
-    #   Watirsome::Accessors.plural? :div   #=> false
-    #   Watirsome::Accessors.plural? :divs  #=> true
+    #   Watirsome.plural? :div   #=> false
+    #   Watirsome.plural? :divs  #=> true
     #
     # @param [Symbol, String] method
     # @return [Boolean]
@@ -142,8 +142,8 @@ module Watirsome
     # Pluralizes element.
     #
     # @example
-    #   Watirsome::Accessors.pluralize :div       #=> :divs
-    #   Watirsome::Accessors.pluralize :checkbox  #=> :checkboxes
+    #   Watirsome.pluralize :div       #=> :divs
+    #   Watirsome.pluralize :checkbox  #=> :checkboxes
     #
     # @param [Symbol, String] method
     # @return [Symbol]

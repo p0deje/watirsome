@@ -30,7 +30,7 @@ class Page
     @initialized = true
   end
 
-  %w(div a text_field select_list).each do |tag|
+  %w(div a text_field checkbox select_list).each do |tag|
     send tag, :"#{tag}1"
     send tag, :"#{tag}2", id: tag
     send tag, :"#{tag}3", id: tag, class: /#{tag}/

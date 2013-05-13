@@ -25,7 +25,8 @@ shared_examples_for :set_accessor do |tags|
 
       it 'sets value on element with custom locator' do
         element2 = stub('element', visible?: false)
-        watir.should_receive(:"#{tag}s").with(id: tag, class: tag).and_return([element, element2])
+        plural = Watirsome.pluralize(tag)
+        watir.should_receive(plural).with(id: tag, class: tag).and_return([element, element2])
         element.should_receive(:set).with('value')
         accessor(tag, 4, 'value')
       end

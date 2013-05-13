@@ -40,7 +40,8 @@ shared_examples_for :read_accessor do |tags|
 
       it 'gets text from element with custom locator' do
         element2 = stub('element', visible?: false)
-        watir.should_receive(:"#{tag}s").with(id: tag, class: tag).and_return([element, element2])
+        plural = Watirsome.pluralize(tag)
+        watir.should_receive(plural).with(id: tag, class: tag).and_return([element, element2])
         read_expectation(tag)
         accessor(tag, 4).should == 'text'
       end
