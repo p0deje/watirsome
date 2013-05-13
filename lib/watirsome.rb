@@ -132,10 +132,35 @@ module Watirsome
     #
     def plural?(method)
       str = method.to_s
-      sym = method.to_sym
-      sgl = str.sub(/s$/, '').to_sym
+      plr = str.to_sym
+      sgl = str.sub(/e?s$/, '').to_sym
 
-      /s$/ === str && Watirsome.watir_methods.include?(sym) && Watirsome.watir_methods.include?(sgl)
+      /s$/ === str && Watirsome.watir_methods.include?(plr) && Watirsome.watir_methods.include?(sgl)
+    end
+
+    #
+    # Pluralizes element.
+    #
+    # @example
+    #   Watirsome::Accessors.pluralize :div       #=> :divs
+    #   Watirsome::Accessors.pluralize :checkbox  #=> :checkboxes
+    #
+    # @param [Symbol, String] method
+    # @return [Symbol]
+    # @api private
+    #
+    def pluralize(method)
+      str = method.to_s
+      # first try to pluralize with "s"
+      if Watirsome.watir_methods.include?(:"#{str}s")
+        :"#{str}s"
+      # now try to pluralize with "es"
+      elsif Watirsome.watir_methods.include?(:"#{str}es")
+        :"#{str}es"
+      else
+        # looks like we can't pluralize it
+        raise Errors::CannotPluralizeError, "Can't find plural form for #{str}!"
+      end
     end
 
   end # self
@@ -153,3 +178,4 @@ end # Watirsome
 require 'watir-webdriver'
 require 'watirsome/accessors'
 require 'watirsome/initializers'
+require 'watirsome/errors'

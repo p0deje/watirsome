@@ -43,7 +43,6 @@ describe Watirsome do
     end
   end
 
-  
   describe '.watir_methods' do
     it 'returns array of watir container methods' do
       described_class.watir_methods.each do |method|
@@ -63,8 +62,12 @@ describe Watirsome do
   end
 
   describe '.plural?' do
-    it 'returns true if watir-contained method is plural' do
+    it 'returns true if watir-contained method is plural with "s" ending' do
       described_class.plural?(:divs).should == true
+    end
+
+    it 'returns true if watir-contained method is plural with "es" ending' do
+      described_class.plural?(:checkboxes).should == true
     end
 
     it 'returns false if watir-contained method is singular' do
@@ -73,6 +76,20 @@ describe Watirsome do
 
     it 'returns false if method is not watir-contained' do
       described_class.plural?(:foo).should == false
+    end
+  end
+
+  describe '.pluralize' do
+    it 'pluralizes method name with "s"' do
+      described_class.pluralize(:div).should == :divs
+    end
+
+    it 'pluralizes method name with "es"' do
+      described_class.pluralize(:checkbox).should == :checkboxes
+    end
+
+    it 'raises error when cannot pluralizes method' do
+      -> { described_class.pluralize(:foo) }.should raise_error(Watirsome::Errors::CannotPluralizeError)
     end
   end
   
