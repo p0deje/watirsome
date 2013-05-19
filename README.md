@@ -22,19 +22,22 @@ gem 'watirsome'
 ### Examples
 
 ```ruby
-class Page
+class LoginPage
   include Watirsome
   
   text_field :username, label: 'Username'
   text_field :password, label: 'Password'
-  button :login, text: 'Login'
+  button :submit_login, text: 'Login'
   
   def login(username, password)
     self.username = username
     self.password = password
-    login
+    submit_login
   end
 end
+
+page = LoginPage.new
+page.login('demo', 'demo')
 ```
 
 ### Accessors
