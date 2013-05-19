@@ -36,7 +36,8 @@ class LoginPage
   end
 end
 
-page = LoginPage.new
+browser = Watir::Browser.new
+page = LoginPage.new(browser)
 page.login('demo', 'demo')
 ```
 
