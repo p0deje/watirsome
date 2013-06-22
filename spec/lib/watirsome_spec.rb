@@ -1,12 +1,6 @@
 require 'spec_helper'
 
 describe Watirsome do
-  describe '.region_matcher' do
-    it 'returns region matcher regexp' do
-      described_class.region_matcher.should be_a(Regexp)
-    end
-  end
-  
   %w(readable clickable settable selectable).each do |method|
     describe ".#{method}" do
       it 'returns array of accessors' do
@@ -92,7 +86,7 @@ describe Watirsome do
       -> { described_class.pluralize(:foo) }.should raise_error(Watirsome::Errors::CannotPluralizeError)
     end
   end
-  
+
   context 'when included' do
     include_context :page
 

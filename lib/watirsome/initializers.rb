@@ -1,6 +1,6 @@
 module Watirsome
   module Initializers
-    
+
     #
     # Initializes page class.
     # Allows to define "#initialize_page" which will be called as page constructor.
@@ -25,12 +25,10 @@ module Watirsome
       # get included and extended modules
       modules = self.class.included_modules + (class << self; self end).included_modules
       modules.uniq!
-      # make sure only necessary modules are being called
-      regexp = Watirsome.region_matcher
-      modules.select! { |m| regexp === m.to_s }
+      # initialize each module
       modules.each do |m|
         # check that constructor is defined and we haven't called it before
-        if m.instance_methods.include?(:initialize_region) && !@initialized_regions.include?(m)
+        if !@initialized_regions.include?(m) && m.instance_methods.include?(:initialize_region)
           m.instance_method(:initialize_region).bind(self).call
           # cache region
           @initialized_regions << m

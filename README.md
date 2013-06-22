@@ -24,11 +24,11 @@ gem 'watirsome'
 ```ruby
 class LoginPage
   include Watirsome
-  
+
   text_field :username, label: 'Username'
   text_field :password, label: 'Password'
   button :submit_login, text: 'Login'
-  
+
   def login(username, password)
     self.username = username
     self.password = password
@@ -43,14 +43,14 @@ page.login('demo', 'demo')
 
 ### Accessors
 
-Watirsome provides you with accessors DSL to isolate elements from your methods. 
+Watirsome provides you with accessors DSL to isolate elements from your methods.
 
 All accessors are just proxied to Watir, thus you free to use all its power in your page objects.
 
 ```ruby
 class Page
   include Watirsome
-  
+
   # any method defined in Watir::Container are accessible
   body :body
   section :section, id: 'section_one'
@@ -65,11 +65,11 @@ You can use any kind of locators you use with Watir.
 ```ruby
 class Page
   include Watirsome
-  
+
   body :body
   section :one, id: 'section_one'
   element :svg, tag_name: 'svg'
-  button :login, class: 'submit', index: 1 
+  button :login, class: 'submit', index: 1
 end
 
 page = Page.new(@browser)
@@ -84,9 +84,9 @@ Watirsome also provides you with opportunity to locate elements by using any boo
 ```ruby
 class Page
   include Watirsome
-  
-  div :layer, class: 'layer', visible: true    
-  span :wrapper, class: 'span', exists: false  
+
+  div :layer, class: 'layer', visible: true
+  span :wrapper, class: 'span', exists: false
 end
 
 page = Page.new(@browser)
@@ -99,7 +99,7 @@ You can also use proc/lambda/block to locate element. Block is executed in the c
 ```ruby
 class Page
   include Watirsome
-  
+
   div :layer, class: 'layer'
   span :wrapper, -> { layer_div.span(class: 'span') }
 end
@@ -113,9 +113,9 @@ Moreover, you can pass arguments to blocks!
 ```ruby
 class Page
   include Watirsome
-  
+
   div :layer, class: 'layer'
-  a :link do |text| 
+  a :link do |text|
     layer_div.a(text: text)
   end
 end
@@ -252,7 +252,7 @@ page.country = 'Russia'  #=> selects option with "Russia" text
 
 ### Initializers
 
-Watirsome provides you with initializers DSL to dynamically modify your pages/regions behavior. 
+Watirsome provides you with initializers DSL to dynamically modify your pages/regions behavior.
 
 #### Page initializer
 
@@ -292,7 +292,7 @@ end
 class Page
   include Watirsome
   include HeaderRegion
-  
+
   def initialize_page
     extend FooterRegion
   end
@@ -303,13 +303,7 @@ Page.new(@browser)
 #=> 'Initialized footer!'
 ```
 
-Regions are being cached, so, once initialzed, they won't be executed if you call `Page#initialize_regions` again.
-
-Each module is first checked if its name matches the regular expression of region (to make sure we don't touch unrelated included modules). By default, regexp is `/^.+(Region)$/`, but you can change it by altering `Watirsome.region_matcher`.
-
-```ruby
-Watirsome.region_matcher = /^.+(Region|Helper)$/
-```
+Regions are being cached, so, once initialized, they won't be executed if you call `Page#initialize_regions` again.
 
 ### Limitations
 

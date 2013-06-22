@@ -1,9 +1,6 @@
 module Watirsome
   class << self
 
-    # @attr [Regexp] region_matcher
-    attr_accessor :region_matcher
-
     # @attr [Array<Symbol>] readable
     attr_accessor :readable
 
@@ -15,14 +12,6 @@ module Watirsome
 
     # @attr [Array<Symbol>] selectable
     attr_accessor :selectable
-
-    #
-    # Returns regular expression for region module names.
-    # @return [Regexp]
-    #
-    def region_matcher
-      @region_matcher ||= /^.+(Region)$/
-    end
 
     #
     # Returns array of readable elements.
@@ -165,7 +154,7 @@ module Watirsome
 
   end # self
 
-  
+
   def self.included(kls)
     kls.extend         Watirsome::Accessors::ClassMethods
     kls.send :include, Watirsome::Accessors::InstanceMethods
