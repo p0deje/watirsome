@@ -24,7 +24,7 @@ shared_examples_for :click_accessor do |tags|
       end
 
       it 'clicks element with custom locator' do
-        element2 = stub('element', visible?: false)
+        element2 = double('element', visible?: false)
         plural = Watirsome.pluralize(tag)
         watir.should_receive(plural).with(id: tag, class: tag).and_return([element, element2])
         element.should_receive(:click).with(any_args)
