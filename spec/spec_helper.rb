@@ -19,13 +19,13 @@ end
 
 RSpec.configure do |spec|
   spec.alias_it_should_behave_like_to :it_defines, 'it defines'
-  
+
   shared_context :page do
-    let(:watir) { stub('watir')    }
+    let(:watir) { double('watir')    }
     let(:page)  { Page.new(watir)  }
   end
-  
+
   shared_context :element do
-    let(:element) { stub('element', visible?: true) }
+    let(:element) { double('element', visible?: true) }
   end
 end

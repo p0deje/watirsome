@@ -4,14 +4,14 @@ shared_examples_for :read_accessor do |tags|
       def accessor(tag, index, *args)
         page.send :"#{tag}#{index}", *args
       end
-      
+
       def read_expectation(tag)
         case tag
         when 'text_field'
           element.should_receive(:value).and_return('text')  
         when 'select_list'
-          option1 = stub('option1', selected?: true)
-          option2 = stub('option2', selected?: false)
+          option1 = double('option1', selected?: true)
+          option2 = double('option2', selected?: false)
           element.should_receive(:options).and_return([option1, option2])
           option1.should_receive(:text).and_return('text')
           option2.should_not_receive(:text)
@@ -39,7 +39,7 @@ shared_examples_for :read_accessor do |tags|
       end
 
       it 'gets text from element with custom locator' do
-        element2 = stub('element', visible?: false)
+        element2 = double('element', visible?: false)
         plural = Watirsome.pluralize(tag)
         watir.should_receive(plural).with(id: tag, class: tag).and_return([element, element2])
         read_expectation(tag)

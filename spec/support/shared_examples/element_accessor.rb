@@ -21,7 +21,7 @@ shared_examples_for :element_accessor do |tags|
       end
 
       it 'finds element with custom locator' do
-        element2 = stub('element')
+        element2 = double('element')
         plural = Watirsome.pluralize(tag)
         watir.should_receive(plural).with(id: tag, class: tag).and_return([element, element2])
         element.should_receive(:visible?).with(no_args).and_return(true)
