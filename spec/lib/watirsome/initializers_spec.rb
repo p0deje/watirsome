@@ -7,32 +7,32 @@ describe Watirsome::Initializers do
     it 'does not initalize page if there is no constructor defined' do
       page = Page.dup
       page.class_eval { remove_method :initialize_page }
-      page.should_not_receive :initialize_page
+      expect(page).not_to receive(:initialize_page)
       page.new(watir)
     end
 
     it 'initializes page if there is constructor defined' do
-      page.instance_variable_get(:@initialized).should == true
+      expect(page.instance_variable_get(:@initialized)).to eq(true)
     end
 
     it 'initalizes regions' do
-      Page.any_instance.should_receive :initialize_regions
+      expect_any_instance_of(Page).to receive(:initialize_regions)
       Page.new(watir)
     end
   end
 
   describe '#initialize_regions' do
     it 'initalizes included regions' do
-      page.instance_variable_get(:@included_initialized).should == 1
+      expect(page.instance_variable_get(:@included_initialized)).to eq(1)
     end
 
     it 'initalizes extended regions' do
-      page.instance_variable_get(:@extended_initialized).should == 1
+      expect(page.instance_variable_get(:@extended_initialized)).to eq(1)
     end
 
     it 'caches initalized regions' do
       page.initialize_regions
-      page.instance_variable_get(:@included_initialized).should == 1
+      expect(page.instance_variable_get(:@included_initialized)).to eq(1)
     end
   end
 end

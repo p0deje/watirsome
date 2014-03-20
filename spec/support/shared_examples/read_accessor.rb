@@ -8,60 +8,60 @@ shared_examples_for :read_accessor do |tags|
       def read_expectation(tag)
         case tag
         when 'text_field'
-          element.should_receive(:value).and_return('text')
+          expect(element).to receive(:value).and_return('text')
         when 'select_list'
           option1 = double('option1', selected?: true)
           option2 = double('option2', selected?: false)
-          element.should_receive(:options).and_return([option1, option2])
-          option1.should_receive(:text).and_return('text')
-          option2.should_not_receive(:text)
+          expect(element).to receive(:options).and_return([option1, option2])
+          expect(option1).to receive(:text).and_return('text')
+          expect(option2).not_to receive(:text)
         else
-          element.should_receive(:text).and_return('text')
+          expect(element).to receive(:text).and_return('text')
         end
       end
 
       it 'gets text from element with no locators' do
-        watir.should_receive(tag).with(no_args).and_return(element)
+        expect(watir).to receive(tag).with(no_args).and_return(element)
         read_expectation(tag)
-        accessor(tag, 1).should == 'text'
+        expect(accessor(tag, 1)).to eq('text')
       end
 
       it 'gets text from element with single watir locator' do
-        watir.should_receive(tag).with(id: tag).and_return(element)
+        expect(watir).to receive(tag).with(id: tag).and_return(element)
         read_expectation(tag)
-        accessor(tag, 2).should == 'text'
+        expect(accessor(tag, 2)).to eq('text')
       end
 
       it 'gets text from element with multiple watir locator' do
-        watir.should_receive(tag).with(id: tag, class: /#{tag}/).and_return(element)
+        expect(watir).to receive(tag).with(id: tag, class: /#{tag}/).and_return(element)
         read_expectation(tag)
-        accessor(tag, 3).should == 'text'
+        expect(accessor(tag, 3)).to eq('text')
       end
 
       it 'gets text from element with custom locator' do
         element2 = double('element', visible?: false)
         plural = Watirsome.pluralize(tag)
-        watir.should_receive(plural).with(id: tag, class: tag).and_return([element, element2])
+        expect(watir).to receive(plural).with(id: tag, class: tag).and_return([element, element2])
         read_expectation(tag)
-        accessor(tag, 4).should == 'text'
+        expect(accessor(tag, 4)).to eq('text')
       end
 
       it 'gets text from element with proc' do
-        watir.should_receive(tag).with(id: tag).and_return(element)
+        expect(watir).to receive(tag).with(id: tag).and_return(element)
         read_expectation(tag)
-        accessor(tag, 5).should == 'text'
+        expect(accessor(tag, 5)).to eq('text')
       end
 
       it 'gets text from element with lambda' do
-        watir.should_receive(tag).with(id: tag).and_return(element)
+        expect(watir).to receive(tag).with(id: tag).and_return(element)
         read_expectation(tag)
-        accessor(tag, 6).should == 'text'
+        expect(accessor(tag, 6)).to eq('text')
       end
 
       it 'gets text from element with block and custom arguments' do
-        watir.should_receive(tag).with(id: tag).and_return(element)
+        expect(watir).to receive(tag).with(id: tag).and_return(element)
         read_expectation(tag)
-        accessor(tag, 7, tag).should == 'text'
+        expect(accessor(tag, 7, tag)).to eq('text')
       end
     end
   end

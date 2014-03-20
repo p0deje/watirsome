@@ -12,9 +12,9 @@ describe Watirsome::Accessors do
 
   it 'supports subtype custom locators' do
     element2 = double('element')
-    watir.should_receive(:select_lists).with(id: 'select_list').and_return([element, element2])
-    element.should_receive(:selected?).with('Test').and_return(true)
-    element2.should_receive(:selected?).with('Test').and_return(false)
-    page.select_list8_select_list.should == element
+    expect(watir).to receive(:select_lists).with(id: 'select_list').and_return([element, element2])
+    expect(element).to receive(:selected?).with('Test').and_return(true)
+    expect(element2).to receive(:selected?).with('Test').and_return(false)
+    expect(page.select_list8_select_list).to eq(element)
   end
 end

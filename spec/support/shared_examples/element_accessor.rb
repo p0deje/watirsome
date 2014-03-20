@@ -6,42 +6,42 @@ shared_examples_for :element_accessor do |tags|
       end
 
       it 'finds element with no locators' do
-        watir.should_receive(tag).with(no_args).and_return(element)
-        accessor(tag, 1).should == element
+        expect(watir).to receive(tag).with(no_args).and_return(element)
+        expect(accessor(tag, 1)).to eq(element)
       end
 
       it 'finds element with single watir locator' do
-        watir.should_receive(tag).with(id: tag).and_return(element)
-        accessor(tag, 2).should == element
+        expect(watir).to receive(tag).with(id: tag).and_return(element)
+        expect(accessor(tag, 2)).to eq(element)
       end
 
       it 'finds element with multiple watir locator' do
-        watir.should_receive(tag).with(id: tag, class: /#{tag}/).and_return(element)
-        accessor(tag, 3).should == element
+        expect(watir).to receive(tag).with(id: tag, class: /#{tag}/).and_return(element)
+        expect(accessor(tag, 3)).to eq(element)
       end
 
       it 'finds element with custom locator' do
         element2 = double('element')
         plural = Watirsome.pluralize(tag)
-        watir.should_receive(plural).with(id: tag, class: tag).and_return([element, element2])
-        element.should_receive(:visible?).and_return(true)
-        element2.should_receive(:visible?).and_return(false)
-        accessor(tag, 4).should == element
+        expect(watir).to receive(plural).with(id: tag, class: tag).and_return([element, element2])
+        expect(element).to receive(:visible?).and_return(true)
+        expect(element2).to receive(:visible?).and_return(false)
+        expect(accessor(tag, 4)).to eq(element)
       end
 
       it 'finds element with proc' do
-        watir.should_receive(tag).with(id: tag).and_return(element)
-        accessor(tag, 5).should == element
+        expect(watir).to receive(tag).with(id: tag).and_return(element)
+        expect(accessor(tag, 5)).to eq(element)
       end
 
       it 'finds element with lambda' do
-        watir.should_receive(tag).with(id: tag).and_return(element)
-        accessor(tag, 6).should == element
+        expect(watir).to receive(tag).with(id: tag).and_return(element)
+        expect(accessor(tag, 6)).to eq(element)
       end
 
       it 'finds element with block and custom arguments' do
-        watir.should_receive(tag).with(id: tag).and_return(element)
-        accessor(tag, 7, tag).should == element
+        expect(watir).to receive(tag).with(id: tag).and_return(element)
+        expect(accessor(tag, 7, tag)).to eq(element)
       end
     end
   end
