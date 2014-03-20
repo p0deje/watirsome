@@ -52,7 +52,7 @@ module Watirsome
       # @api private
       #
       def define_element_accessor(name, method, *args, &block)
-        watir_args, custom_args = extract_custom_args(args)
+        watir_args, custom_args = extract_custom_args(method, args)
         define_method :"#{name}_#{method}" do |*opts|
           if block_given?
             instance_exec(*opts, &block)
@@ -73,7 +73,7 @@ module Watirsome
       # @api private
       #
       def define_click_accessor(name, method, *args, &block)
-        watir_args, custom_args = extract_custom_args(args)
+        watir_args, custom_args = extract_custom_args(method, args)
         define_method name do |*opts|
           if block_given?
             instance_exec(*opts, &block).click
@@ -98,7 +98,7 @@ module Watirsome
       # @api private
       #
       def define_read_accessor(name, method, *args, &block)
-        watir_args, custom_args = extract_custom_args(args)
+        watir_args, custom_args = extract_custom_args(method, args)
         define_method name do |*opts|
           element = if block_given?
                       instance_exec(*opts, &block)
@@ -129,7 +129,7 @@ module Watirsome
       # @api private
       #
       def define_set_accessor(name, method, *args, &block)
-        watir_args, custom_args = extract_custom_args(args)
+        watir_args, custom_args = extract_custom_args(method, args)
         define_method :"#{name}=" do |*opts|
           element = if block_given?
                       instance_exec(&block)
@@ -157,7 +157,7 @@ module Watirsome
       # @api private
       #
       def define_select_accessor(name, method, *args, &block)
-        watir_args, custom_args = extract_custom_args(args)
+        watir_args, custom_args = extract_custom_args(method, args)
         define_method :"#{name}=" do |*opts|
           if block_given?
             instance_exec(&block).select *opts
@@ -171,18 +171,19 @@ module Watirsome
       # Extracts custom arguments which Watirsome gracefully handles from
       # mixed array with Watir locators.
       #
+      # @param [Symbol, String] method
       # @param [Array] args
       # @return Two arrays: Watir locators and custom locators
       # @api private
       #
-      def extract_custom_args(*args)
+      def extract_custom_args(method, *args)
         identifier = args.shift
         watir_args, custom_args = [], []
         identifier.each_with_index do |hashes, index|
           watir_arg, custom_arg = {}, {}
           if hashes && !hashes.is_a?(Proc)
             hashes.each do |k, v|
-              if Watir::Element.instance_methods.include? :"#{k}?"
+              if Watir.element_class_for(method).instance_methods.include? :"#{k}?"
                 custom_arg[k] = identifier[index][k]
               else
                 watir_arg[k] = v
@@ -218,7 +219,15 @@ module Watirsome
           plural = Watirsome.plural?(method)
           method = Watirsome.pluralize(method) unless plural
           elements = @browser.send(method, *watir_args)
-          custom_args.first.each { |k, v| elements.to_a.select! { |e| e.send(:"#{k}?") == v } }
+          custom_args.first.each do |k, v|
+            elements.to_a.select! do |e|
+              if e.method(:"#{k}?").arity == 0
+                s.send(:"#{k}?") == v
+              else
+                e.send(:"#{k}?", v)
+              end
+            end
+          end
           plural ? elements : elements.first
         end
       end

@@ -40,10 +40,13 @@ class Page
     # set/select accessor cannot have block arguments
     case tag
     when 'div', 'a'
-      send(tag, :"#{tag}7") { |id| @browser.send(tag, id: id) }    
+      send(tag, :"#{tag}7") { |id| @browser.send(tag, id: id) }
     when 'text_field', 'select_list'
-      send(tag, :"#{tag}7") { @browser.send(tag, id: tag) }    
+      send(tag, :"#{tag}7") { @browser.send(tag, id: tag) }
     end
   end
+
+  # custom subtype locators
+  select_list :select_list8, id: 'select_list', selected: 'Test'
 
 end # Page

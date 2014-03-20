@@ -79,22 +79,24 @@ page.svg_element   # equals to @browser.element(tag_name: 'svg')
 page.login_button  # equals to @browser.button(class: 'submit', index: 1)
 ```
 
-Watirsome also provides you with opportunity to locate elements by using any boolean method Watir element supports.
+Watirsome also provides you with opportunity to locate elements by using any boolean method Watir element (and subelements) supports.
 
 ```ruby
 class Page
   include Watirsome
 
   div :layer, class: 'layer', visible: true
-  span :wrapper, class: 'span', exists: false
+  span :wrapper, exists: false
+  select_list :country, selected: 'Please select country...'
 end
 
 page = Page.new(@browser)
-page.layer_div     # equals to @browser.divs(class: 'layer').find { |e| e.visible? == true }
-page.wrapper_span  # equals to @browser.divs(class: 'layer').find { |e| e.exists? == false }
+page.layer_div           # equals to @browser.divs(class: 'layer').find { |e| e.visible? == true }
+page.wrapper_span        # equals to @browser.spans.find { |e| e.exists? == false }
+page.country_select_list # equals to @browser.select_lists.find { |e| e.selected?('Please selected country...') }
 ```
 
-You can also use proc/lambda/block to locate element. Block is executed in the context of initalized page, so other accessors can be used.
+You can also use proc/lambda/block to locate element. Block is executed in the context of initialized page, so other accessors can be used.
 
 ```ruby
 class Page
