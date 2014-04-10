@@ -147,17 +147,17 @@ page.svg_element          #=> #<Watir::HTMLElement:0x15288276ab771162 selector={
 
 #### Readable accessors
 
-For each redable element, accessor method is defined which returns text of that element.
+For each readable element, accessor method is defined which returns text of that element.
 
 Read accessor method name is `element_name`.
 
-Default redable methods are: `[:div, :span, :p, :h1, :h2, :h3, :h4, :h5, :h6, :select_list, :text_field, :textarea]`.
+Default readable methods are: `[:div, :span, :p, :h1, :h2, :h3, :h4, :h5, :h6, :select_list, :text_field, :textarea]`.
 
-You can make other elements redable by adding tag names to `Watirsome.redable`.
+You can make other elements readable by adding tag names to `Watirsome.readable`.
 
 ```ruby
-# make section redable
-Watirsome.redable << :section
+# make section readable
+Watirsome.readable << :section
 
 class Page
   include Watirsome
