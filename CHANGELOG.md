@@ -1,3 +1,7 @@
+#### v0.1.4
+
+* Support element subtype boolean locators (e.g. `select_list :list, selected: 'Default'`)
+
 #### v0.1.3
 
 * Remove `Watirsome.region_matcher` so now any module may implement `initialize_region`.
