@@ -222,7 +222,7 @@ module Watirsome
           custom_args.first.each do |k, v|
             elements.to_a.select! do |e|
               if e.method(:"#{k}?").arity == 0
-                s.send(:"#{k}?") == v
+                e.send(:"#{k}?") == v
               else
                 e.send(:"#{k}?", v)
               end
