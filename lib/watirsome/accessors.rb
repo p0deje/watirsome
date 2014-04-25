@@ -137,9 +137,9 @@ module Watirsome
                       grab_elements(method, watir_args, custom_args)
                     end
           if element.respond_to?(:set)
-            element.set *opts
+            element.set(*opts)
           else
-            element.send_keys *opts
+            element.send_keys(*opts)
           end
         end
       end
@@ -160,9 +160,9 @@ module Watirsome
         watir_args, custom_args = extract_custom_args(method, args)
         define_method :"#{name}=" do |*opts|
           if block_given?
-            instance_exec(&block).select *opts
+            instance_exec(&block).select(*opts)
           else
-            grab_elements(method, watir_args, custom_args).select *opts
+            grab_elements(method, watir_args, custom_args).select(*opts)
           end
         end
       end
