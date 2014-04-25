@@ -221,7 +221,7 @@ module Watirsome
           elements = @browser.send(method, *watir_args)
           custom_args.first.each do |k, v|
             elements.to_a.select! do |e|
-              if e.method(:"#{k}?").arity == 0
+              if e.public_method(:"#{k}?").arity == 0
                 e.send(:"#{k}?") == v
               else
                 e.send(:"#{k}?", v)
