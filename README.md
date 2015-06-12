@@ -1,4 +1,4 @@
-## watirsome [![Gem Version](https://badge.fury.io/rb/watirsome.png)](http://badge.fury.io/rb/watirsome) [![Build Status](https://secure.travis-ci.org/p0deje/watirsome.png)](http://travis-ci.org/p0deje/watirsome) [![Coverage Status](https://coveralls.io/repos/p0deje/watirsome/badge.png?branch=master)](https://coveralls.io/r/p0deje/watirsome)
+## watirsome [![Gem Version](https://badge.fury.io/rb/watirsome.svg)](http://badge.fury.io/rb/watirsome) [![Build Status](https://secure.travis-ci.org/p0deje/watirsome.svg)](http://travis-ci.org/p0deje/watirsome) [![Coverage Status](https://coveralls.io/repos/p0deje/watirsome/badge.svg?branch=master)](https://coveralls.io/r/p0deje/watirsome)
 
 Pure dynamic Watir-based page object DSL.
 
