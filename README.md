@@ -73,7 +73,7 @@ class Page
 end
 
 page = Page.new(@browser)
-page.body_element  # equals to @browser.body
+page.body_body     # equals to @browser.body
 page.one_section   # equals to @browser.section(id: 'section_one')
 page.svg_element   # equals to @browser.element(tag_name: 'svg')
 page.login_button  # equals to @browser.button(class: 'submit', index: 1)
