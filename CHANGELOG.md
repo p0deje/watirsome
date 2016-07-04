@@ -1,3 +1,8 @@
+### v0.1.7
+
+* Massive refactoring
+* Added support for read accessors on checkbox/radio element (#4)
+
 #### v0.1.4
 
 * Support element subtype boolean locators (e.g. `select_list :list, selected: 'Default'`)

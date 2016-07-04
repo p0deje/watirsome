@@ -323,4 +323,4 @@ Regions are being cached, so, once initialized, they won't be executed if you ca
 
 ### Copyright
 
-Copyright (c) 2013 Alex Rodionov. See LICENSE.md for details.
+Copyright (c) 2016 Alex Rodionov. See LICENSE.md for details.
