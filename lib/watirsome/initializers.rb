@@ -1,10 +1,42 @@
 module Watirsome
   module Initializers
-
     #
     # Initializes page class.
     # Allows to define "#initialize_page" which will be called as page constructor.
     # After page is initialized, iterates through region and initialize each of them.
+    #
+    # @example Page Initializer
+    #   class Page
+    #     include Watirsome
+    #
+    #     attr_accessor :page_loaded
+    #
+    #     def initialize_page
+    #       self.page_loaded = true
+    #     end
+    #   end
+    #
+    #   page = Page.new(browser)
+    #   page.page_loaded
+    #   #=> true
+    #
+    # @example Region Initializer
+    #   module HeaderRegion
+    #     def initialize_region
+    #       self.page_loaded = true
+    #     end
+    #   end
+    #
+    #   class Page
+    #     include Watirsome
+    #     include HeaderRegion
+    #
+    #     attr_accessor :page_loaded
+    #   end
+    #
+    #   page = Page.new(browser)
+    #   page.page_loaded
+    #   #=> true
     #
     def initialize(browser)
       @browser = browser
@@ -15,9 +47,6 @@ module Watirsome
     #
     # Iterates through definitions of "#initialize_region", thus implementing
     # polymorphic Ruby modules (i.e. page regions).
-    #
-    # Only works with modules matching "Watirsome.region_matcher" regexp.
-    # @see Watirsome.region_matcher
     #
     def initialize_regions
       # regions cacher
@@ -35,6 +64,5 @@ module Watirsome
         end
       end
     end
-
   end # Initializers
 end # Watirsome

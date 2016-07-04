@@ -1,7 +1,3 @@
 module Watirsome
-  module Errors
-
-    class CannotPluralizeError < StandardError; end
-
-  end # Errors
+  CannotPluralizeError = Class.new(StandardError)
 end # Watirsome

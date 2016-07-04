@@ -1,24 +1,69 @@
+#
+# General module which holds all appropriate Watirsome API.
+# Includers can use accessors and initializers API.
+#
+# @example Element Accessors
+#   class Page
+#     include Watirsome
+#
+#     element :body, tag_name: 'body'
+#     div :container, class: 'container'
+#   end
+#
+#   page = Page.new(browser)
+#   page.body_element  #=> browser.element(tag_name: 'body')
+#   page.container_div #=> browser.div(class: 'container')
+#
+# @example Read Accessors
+#   class Page
+#     include Watirsome
+#
+#     div :container, class: 'container'
+#     radio :sex_male, value: "Male"
+#   end
+#
+#   page = Page.new(browser)
+#   page.container #=> "Container"
+#   page.sex_male_radio.set
+#   page.sex_male #=> true
+#
+# @example Click Accessors
+#   class Page
+#     include Watirsome
+#
+#     a :open_google, text: 'Open Google'
+#   end
+#
+#   page = Page.new(browser)
+#   page.open_google
+#   browser.title #=> "Google"
+#
+# @example Set Accessors
+#   class Page
+#     include Watirsome
+#
+#     text_field :name, placeholder: "Enter your name"
+#     select_list :country, name: "Country"
+#     checkbox :agree, name: "I Agree"
+#   end
+#
+#   page = Page.new(browser)
+#   page.name = 'My name'
+#   page.name #=> "My name"
+#   page.country = "Russia"
+#   page.country #=> "Russia"
+#   page.agree = true
+#   page.agree #=> true
+#
 module Watirsome
   class << self
-
-    # @attr [Array<Symbol>] readable
-    attr_accessor :readable
-
-    # @attr [Array<Symbol>] clickable
-    attr_accessor :clickable
-
-    # @attr [Array<Symbol>] settable
-    attr_accessor :settable
-
-    # @attr [Array<Symbol>] selectable
-    attr_accessor :selectable
 
     #
     # Returns array of readable elements.
     # @return [Array<Symbol>]
     #
     def readable
-      @readable ||= [:div, :span, :p, :h1, :h2, :h3, :h4, :h5, :h6, :select_list, :text_field, :textarea]
+      @readable ||= %i[div span p h1 h2 h3 h4 h5 h6 select_list text_field textarea checkbox radio]
     end
 
     #
@@ -26,7 +71,7 @@ module Watirsome
     # @return [Array<Symbol>]
     #
     def clickable
-      @clickable ||= [:a, :link, :button]
+      @clickable ||= %i[a link button]
     end
 
     #
@@ -34,21 +79,17 @@ module Watirsome
     # @return [Array<Symbol>]
     #
     def settable
-      @settable ||= [:text_field, :file_field, :textarea, :checkbox]
-    end
-
-    #
-    # Returns array of selectable elements.
-    # @return [Array<Symbol>]
-    #
-    def selectable
-      @selectable ||= [:select_list]
+      @settable ||= %i[text_field file_field textarea checkbox select_list]
     end
 
     #
     # Returns true if tag can have click accessor.
     #
-    # @param [Symbol, String] method
+    # @example
+    #   Watirsome.clickable?(:button) #=> true
+    #   Watirsome.clickable?(:div)    #=> false
+    #
+    # @param [Symbol, String] tag
     # @return [Boolean]
     #
     def clickable?(tag)
@@ -58,7 +99,11 @@ module Watirsome
     #
     # Returns true if tag can have set accessor.
     #
-    # @param [Symbol, String] method
+    # @example
+    #   Watirsome.settable?(:text_field) #=> true
+    #   Watirsome.settable?(:button)     #=> false
+    #
+    # @param [Symbol, String] tag
     # @return [Boolean]
     #
     def settable?(tag)
@@ -66,19 +111,13 @@ module Watirsome
     end
 
     #
-    # Returns true if tag can have select accessor.
-    #
-    # @param [Symbol, String] method
-    # @return [Boolean]
-    #
-    def selectable?(tag)
-      selectable.include? tag.to_sym
-    end
-
-    #
     # Returns true if tag can have text accessor.
     #
-    # @param [Symbol, String] method
+    # @example
+    #   Watirsome.readable?(:div)  #=> true
+    #   Watirsome.readable?(:body) #=> false
+    #
+    # @param [Symbol, String] tag
     # @return [Boolean]
     #
     def readable?(tag)
@@ -101,6 +140,10 @@ module Watirsome
     #
     # Return true if method can be proxied to Watir, false otherwise.
     #
+    # @example
+    #   Watirsome.watirsome?(:div)  #=> true
+    #   Watirsome.watirsome?(:to_a) #=> false
+    #
     # @param [Symbol] method
     # @return [Boolean]
     #
@@ -112,8 +155,8 @@ module Watirsome
     # Returns true if method is element accessor in plural form.
     #
     # @example
-    #   Watirsome.plural? :div   #=> false
-    #   Watirsome.plural? :divs  #=> true
+    #   Watirsome.plural?(:divs) #=> true
+    #   Watirsome.plural?(:div)  #=> false
     #
     # @param [Symbol, String] method
     # @return [Boolean]
@@ -124,15 +167,17 @@ module Watirsome
       plr = str.to_sym
       sgl = str.sub(/e?s$/, '').to_sym
 
-      /s$/ === str && Watirsome.watir_methods.include?(plr) && Watirsome.watir_methods.include?(sgl)
+      !str.match(/s$/).nil? &&
+        Watirsome.watir_methods.include?(plr) &&
+        Watirsome.watir_methods.include?(sgl)
     end
 
     #
     # Pluralizes element.
     #
     # @example
-    #   Watirsome.pluralize :div       #=> :divs
-    #   Watirsome.pluralize :checkbox  #=> :checkboxes
+    #   Watirsome.pluralize(:div)       #=> :divs
+    #   Watirsome.pluralize(:checkbox)  #=> :checkboxes
     #
     # @param [Symbol, String] method
     # @return [Symbol]
@@ -151,18 +196,15 @@ module Watirsome
         raise Errors::CannotPluralizeError, "Can't find plural form for #{str}!"
       end
     end
-
   end # self
 
 
   def self.included(kls)
-    kls.extend         Watirsome::Accessors::ClassMethods
-    kls.send :include, Watirsome::Accessors::InstanceMethods
-    kls.send :include, Watirsome::Initializers
+    kls.extend Watirsome::Accessors::ClassMethods
+    kls.__send__ :include, Watirsome::Accessors::InstanceMethods
+    kls.__send__ :include, Watirsome::Initializers
   end
-
 end # Watirsome
-
 
 require 'watir-webdriver'
 require 'watirsome/accessors'
