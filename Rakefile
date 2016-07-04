@@ -8,4 +8,7 @@ YARD::Doctest::RakeTask.new do |task|
   task.doctest_opts = %w[-v]
 end
 
-task default: 'yard:doctest'
+require 'rubocop/rake_task'
+RuboCop::RakeTask.new
+
+task default: %w[rubocop yard:doctest]

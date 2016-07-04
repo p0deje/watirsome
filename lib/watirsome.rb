@@ -57,7 +57,6 @@
 #
 module Watirsome
   class << self
-
     #
     # Returns array of readable elements.
     # @return [Array<Symbol>]
@@ -197,7 +196,6 @@ module Watirsome
       end
     end
   end # self
-
 
   def self.included(kls)
     kls.extend Watirsome::Accessors::ClassMethods

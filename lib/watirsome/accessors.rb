@@ -1,7 +1,6 @@
 module Watirsome
   module Accessors
     module ClassMethods
-
       #
       # Iterate through Watir continer methods and define all necessary
       # class methods of element accessors.
@@ -158,9 +157,11 @@ module Watirsome
       #
       def extract_custom_args(method, *args)
         identifier = args.shift
-        watir_args, custom_args = [], []
+        watir_args = []
+        custom_args = []
         identifier.each_with_index do |hashes, index|
-          watir_arg, custom_arg = {}, {}
+          watir_arg = {}
+          custom_arg = {}
           if hashes && !hashes.is_a?(Proc)
             hashes.each do |k, v|
               if Watir.element_class_for(method).instance_methods.include? :"#{k}?"
@@ -174,14 +175,11 @@ module Watirsome
           custom_args << custom_arg unless custom_arg.empty?
         end
 
-        return watir_args, custom_args
+        [watir_args, custom_args]
       end
-
     end # ClassMethods
 
-
     module InstanceMethods
-
       private
 
       #
@@ -211,7 +209,6 @@ module Watirsome
           plural ? elements : elements.first
         end
       end
-
     end # InstanceMethods
   end # Accessors
 end # Watirsome
