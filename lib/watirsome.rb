@@ -19,7 +19,7 @@
 #     include Watirsome
 #
 #     div :container, class: 'container'
-#     radio :sex_male, value: "Male"
+#     radio :sex_male, value: 'Male'
 #   end
 #
 #   page = Page.new(browser)
@@ -42,18 +42,30 @@
 #   class Page
 #     include Watirsome
 #
-#     text_field :name, placeholder: "Enter your name"
-#     select_list :country, name: "Country"
-#     checkbox :agree, name: "I Agree"
+#     text_field :name, placeholder: 'Enter your name'
+#     select_list :country, name: 'Country'
+#     checkbox :agree, name: 'I Agree'
 #   end
 #
 #   page = Page.new(browser)
-#   page.name = 'My name'
+#   page.name = "My name"
 #   page.name #=> "My name"
 #   page.country = "Russia"
 #   page.country #=> "Russia"
 #   page.agree = true
 #   page.agree #=> true
+#
+# @example Locators
+#   class Page
+#     include Watirsome
+#
+#     div :visible, class: 'visible', visible: true
+#     div :invisible, class: 'visible', visible: false
+#   end
+#
+#   page = Page.new(browser)
+#   page.visible_div.visible?   #=> true
+#   page.invisible_div.visible? #=> false
 #
 module Watirsome
   class << self
