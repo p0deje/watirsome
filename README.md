@@ -1,4 +1,4 @@
-## watirsome [![Gem Version](https://badge.fury.io/rb/watirsome.svg)](http://badge.fury.io/rb/watirsome) [![Build Status](https://secure.travis-ci.org/p0deje/watirsome.svg)](http://travis-ci.org/p0deje/watirsome) [![Coverage Status](https://coveralls.io/repos/p0deje/watirsome/badge.svg?branch=master)](https://coveralls.io/r/p0deje/watirsome)
+## watirsome [![Gem Version](https://badge.fury.io/rb/watirsome.svg)](http://badge.fury.io/rb/watirsome) [![Build Status](https://secure.travis-ci.org/p0deje/watirsome.svg)](http://travis-ci.org/p0deje/watirsome)
 
 Pure dynamic Watir-based page object DSL.
 
@@ -126,7 +126,7 @@ page = Page.new(@browser)
 page.link_a('Login')  # equals to @browser.div(class: 'layer').a(text: 'Login')
 ```
 
-#### Element accessors
+#### Element Accessors
 
 For each element, accessor method is defined which returns instance of `Watir::Element` (or subtype when applicable).
 
@@ -145,13 +145,13 @@ page.section_one_section  #=> #<Watir::HTMLElement:0x201b2f994f32c922 selector={
 page.svg_element          #=> #<Watir::HTMLElement:0x15288276ab771162 selector={:tag_name=>"svg"}>
 ```
 
-#### Readable accessors
+#### Readable Accessors
 
 For each readable element, accessor method is defined which returns text of that element.
 
 Read accessor method name is `element_name`.
 
-Default readable methods are: `[:div, :span, :p, :h1, :h2, :h3, :h4, :h5, :h6, :select_list, :text_field, :textarea]`.
+Default readable methods are: `[:div, :span, :p, :h1, :h2, :h3, :h4, :h5, :h6, :select_list, :text_field, :textarea, :checkbox, :radio]`.
 
 You can make other elements readable by adding tag names to `Watirsome.readable`.
 
@@ -177,7 +177,7 @@ There is a bit of logic behind text retrieval:
 2. If element is a select list, return text of first selected option
 3. Otherwise, return text
 
-#### Clickable accessors
+#### Clickable Accessors
 
 For each clickable element, accessor method is defined which performs click on that element.
 
@@ -203,13 +203,13 @@ page.login             # clicks on link
 page.submit('submit')  # clicks on submit input
 ```
 
-#### Settable accessors
+#### Settable Accessors
 
 For each settable element, accessor method is defined which sets value to that element.
 
 Click accessor method name is `#{element_name}=`.
 
-Default settable methods are: `[:text_field, :file_field, :textarea, :checkbox]`.
+Default settable methods are: `[:text_field, :file_field, :textarea, :checkbox, :select_list]`.
 
 You can make other elements settable by adding tag names to `Watirsome.settable`.
 
@@ -222,41 +222,22 @@ class Page
 
   text_field :username, label: 'Username'
   input :date, type: 'date'
+  select_list :country, label: 'Country'
 end
 
 page = Page.new(@browser)
 page.username = 'Username'         # sets value of username text field
 page.date = '2013-01-01', :return  # sends text to element and hits "Enter"
+page.country = 'Russia'            # selects option with "Russia" text
 ```
 
 If found element responds to `#set`, accessor calls it. Otherwise, `#send_keys` is used.
-
-#### Selectable accessors
-
-For each selectable element, accessor method is defined which selects opton of that element.
-
-Click accessor method name is `#{element_name}=`.
-
-Default selectable methods are: `[:select_list]`.
-
-You can make other elements selectable by adding tag names to `Watirsome.selectable`. Though, why would you want?
-
-```ruby
-class Page
-  include Watirsome
-
-  select_list :country, label: 'Country'
-end
-
-page = Page.new(@browser)
-page.country = 'Russia'  #=> selects option with "Russia" text
-```
 
 ### Initializers
 
 Watirsome provides you with initializers DSL to dynamically modify your pages/regions behavior.
 
-#### Page initializer
+#### Page Initializer
 
 Each page may define `#initialize_page` method which will be used as page constructor.
 
@@ -273,7 +254,7 @@ Page.new(@browser)
 #=> 'Initialized!'
 ```
 
-#### Region initializer
+#### Region Initializer
 
 Each region you include/extend may define `#initialize_region` method which will be called after page constructor.
 
