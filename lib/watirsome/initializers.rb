@@ -15,7 +15,7 @@ module Watirsome
   #     end
   #   end
   #
-  #   page = Page.new(browser)
+  #   page = Page.new(@browser)
   #   page.page_loaded
   #   #=> true
   #
@@ -33,7 +33,7 @@ module Watirsome
   #     attr_accessor :page_loaded
   #   end
   #
-  #   page = Page.new(browser)
+  #   page = Page.new(@browser)
   #   page.page_loaded
   #   #=> true
   #

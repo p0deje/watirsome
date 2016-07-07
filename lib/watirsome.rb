@@ -10,9 +10,9 @@
 #     div :container, class: 'container'
 #   end
 #
-#   page = Page.new(browser)
-#   page.body_element  #=> browser.element(tag_name: 'body')
-#   page.container_div #=> browser.div(class: 'container')
+#   page = Page.new(@browser)
+#   page.body_element  #=> @browser.element(tag_name: 'body')
+#   page.container_div #=> @browser.div(class: 'container')
 #
 # @example Read Accessors
 #   class Page
@@ -22,7 +22,7 @@
 #     radio :sex_male, value: 'Male'
 #   end
 #
-#   page = Page.new(browser)
+#   page = Page.new(@browser)
 #   page.container #=> "Container"
 #   page.sex_male_radio.set
 #   page.sex_male #=> true
@@ -34,9 +34,9 @@
 #     a :open_google, text: 'Open Google'
 #   end
 #
-#   page = Page.new(browser)
+#   page = Page.new(@browser)
 #   page.open_google
-#   browser.title #=> "Google"
+#   @browser.title #=> "Google"
 #
 # @example Set Accessors
 #   class Page
@@ -47,7 +47,7 @@
 #     checkbox :agree, name: 'I Agree'
 #   end
 #
-#   page = Page.new(browser)
+#   page = Page.new(@browser)
 #   page.name = "My name"
 #   page.name #=> "My name"
 #   page.country = "Russia"
@@ -63,7 +63,7 @@
 #     div :invisible, class: 'visible', visible: false
 #   end
 #
-#   page = Page.new(browser)
+#   page = Page.new(@browser)
 #   page.visible_div.visible?   #=> true
 #   page.invisible_div.visible? #=> false
 #
