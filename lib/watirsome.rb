@@ -216,7 +216,7 @@ module Watirsome
   end
 end # Watirsome
 
-require 'watir-webdriver'
+require 'watir'
 require 'watirsome/accessors'
 require 'watirsome/initializers'
 require 'watirsome/errors'

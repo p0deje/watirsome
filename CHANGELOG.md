@@ -1,3 +1,7 @@
+### v0.2.0
+
+* Update watirsome for Watir 6
+
 ### v0.1.7
 
 * Massive refactoring

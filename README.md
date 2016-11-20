@@ -290,9 +290,8 @@ Regions are being cached, so, once initialized, they won't be executed if you ca
 
 ### Limitations
 
-1. Currently tested to work only with `watir-webdriver`. Let me know if it works using `watir-classic`.
-2. You cannot use `Watir::Browser#select` method as it's overriden by `Kernel#select`. Use `Watir::Browser#select_list` instead.
-3. You cannot use block arguments to locate elements for settable/selectable accessors (it makes no sense). However, you can use block arguments for all other accessors.
+1. You cannot use `Watir::Browser#select` method as it's overriden by `Kernel#select`. Use `Watir::Browser#select_list` instead.
+2. You cannot use block arguments to locate elements for settable/selectable accessors (it makes no sense). However, you can use block arguments for all other accessors.
 
 ### Contribute
 
