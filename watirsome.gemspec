@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.require_paths = %w[lib]
 
-  s.add_dependency 'watir-webdriver', '>= 0.6.9'
+  s.add_dependency 'watir', ''>= 6.0'
 
   s.add_development_dependency 'yard-doctest', '>= 0.1.5'
   s.add_development_dependency 'rake'
