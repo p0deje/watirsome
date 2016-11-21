@@ -199,7 +199,7 @@ module Watirsome
           elements = @browser.__send__(method, *watir_args)
           custom_args.first.each do |k, v|
             elements.to_a.select! do |e|
-              if e.public_method(:"#{k}?").arity == 0
+              if e.public_method(:"#{k}?").arity.zero?
                 e.__send__(:"#{k}?") == v
               else
                 e.__send__(:"#{k}?", v)
