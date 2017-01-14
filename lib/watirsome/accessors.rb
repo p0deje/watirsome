@@ -1,5 +1,7 @@
 module Watirsome
   module Accessors
+    SKIP_CUSTOM_SELECTORS = %i[visible].freeze
+
     module ClassMethods
       #
       # Iterate through Watir continer methods and define all necessary
@@ -164,7 +166,8 @@ module Watirsome
           custom_arg = {}
           if hashes && !hashes.is_a?(Proc)
             hashes.each do |k, v|
-              if Watir.element_class_for(method).instance_methods.include? :"#{k}?"
+              element_methods = Watir.element_class_for(method).instance_methods
+              if element_methods.include?(:"#{k}?") && !SKIP_CUSTOM_SELECTORS.include?(k)
                 custom_arg[k] = identifier[index][k]
               else
                 watir_arg[k] = v

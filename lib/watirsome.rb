@@ -61,11 +61,13 @@
 #
 #     div :visible, class: 'visible', visible: true
 #     div :invisible, class: 'visible', visible: false
+#     select_list :country, selected: 'USA'
 #   end
 #
 #   page = Page.new(@browser)
 #   page.visible_div.visible?   #=> true
 #   page.invisible_div.visible? #=> false
+#   page.country_select_list.selected?('USA') #=> true
 #
 module Watirsome
   class << self
