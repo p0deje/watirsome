@@ -162,20 +162,16 @@ module Watirsome
         watir_args = []
         custom_args = []
         identifier.each_with_index do |hashes, index|
-          watir_arg = {}
-          custom_arg = {}
-          if hashes && !hashes.is_a?(Proc)
-            hashes.each do |k, v|
-              element_methods = Watir.element_class_for(method).instance_methods
-              if element_methods.include?(:"#{k}?") && !SKIP_CUSTOM_SELECTORS.include?(k)
-                custom_arg[k] = identifier[index][k]
-              else
-                watir_arg[k] = v
-              end
+          next if !hashes || !hashes.is_a?(Proc)
+
+          hashes.each do |k, v|
+            element_methods = Watir.element_class_for(method).instance_methods
+            if element_methods.include?(:"#{k}?") && !SKIP_CUSTOM_SELECTORS.include?(k)
+              custom_args << { k => identifier[index][k] }
+            else
+              watir_args << { k => v }
             end
           end
-          watir_args  << watir_arg  unless watir_arg.empty?
-          custom_args << custom_arg unless custom_arg.empty?
         end
 
         [watir_args, custom_args]
