@@ -55,12 +55,12 @@
 #   page.agree = true
 #   page.agree #=> true
 #
-# @example Locators
+# @example Custom Locators
 #   class Page
 #     include Watirsome
 #
-#     div :visible, class: 'visible', visible: true
-#     div :invisible, class: 'visible', visible: false
+#     div :visible, class: 'visibility', visible: true
+#     div :invisible, class: 'visibility', visible: false
 #     select_list :country, selected: 'USA'
 #   end
 #
