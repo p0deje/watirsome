@@ -1,3 +1,11 @@
+### v0.2.2
+
+* Nothing new, just improvements in codebase
+
+### v0.2.1
+
+* Delegate `:visible` selector to Watir 6 which supports it natively
+
 ### v0.2.0
 
 * Update watirsome for Watir 6
