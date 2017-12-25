@@ -177,7 +177,7 @@ module Watirsome
 
         [watir_args, custom_args]
       end
-    end # ClassMethods
+    end
 
     module InstanceMethods
       private
@@ -209,6 +209,6 @@ module Watirsome
           plural ? elements : elements.first
         end
       end
-    end # InstanceMethods
-  end # Accessors
-end # Watirsome
+    end
+  end
+end

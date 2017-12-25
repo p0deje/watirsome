@@ -10,6 +10,10 @@ Metrics/MethodLength:
 Metrics/ModuleLength:
   Max: 110
 
+Naming/PredicateName:
+  Exclude:
+    - lib/watirsome/regions.rb
+
 Style/Documentation:
   Enabled: false
 

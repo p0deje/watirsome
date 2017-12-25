@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'watir', '>= 6.0'
 
-  s.add_development_dependency 'yard-doctest', '>= 0.1.5'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rubocop'
+  s.add_development_dependency 'yard-doctest', '>= 0.1.5'
 end
