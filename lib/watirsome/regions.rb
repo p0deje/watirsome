@@ -81,7 +81,7 @@ module Watirsome
           opts.all? do |key, value|
             entity.__send__(key) == value
           end
-        end
+        end || raise("No #{finder_method_name} matching: #{opts}.")
       end
     end
   end

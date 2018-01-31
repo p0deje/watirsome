@@ -210,7 +210,7 @@
 #   page.users.map(&:name)               #=> @browser.elements(class: 'for-user').map(&:text)
 #   page.user(name: 'John Smith 1').name #=> @browser.element(class: 'for-user', index: 0).text
 #   page.user(name: 'John Smith 2').name #=> @browser.element(class: 'for-user', index: 1).text
-#   page.user(name: 'John Smith 3')      #=> nil
+#   page.user(name: 'John Smith 3')      #=> raise RuntimeError, "No user matching: #{{name: 'John Smith 3'}}."
 #
 module Watirsome
   class << self
