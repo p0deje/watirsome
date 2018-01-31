@@ -22,7 +22,7 @@ module Watirsome
 
     private
 
-    # rubocop:disable Metrics/AbcSize, Metrics/BlockLength, Metrics/MethodLength
+    # rubocop:disable Metrics/AbcSize, Metrics/BlockLength, Metrics/MethodLength, Metrics/PerceivedComplexity, Metrics/LineLength
     def define_region_accessor(region_name, each: nil)
       define_method(region_name) do
         class_path = self.class.name.split('::')
@@ -34,13 +34,17 @@ module Watirsome
                     else
                       raise "Cannot understand namespace from #{class_path}"
                     end
-        klass = region_name.to_s.split('_').map(&:capitalize).join
-        klass.sub!(/s\z/, '') if each
-        klass << 'Region'
+
+        singular_klass = region_name.to_s.split('_').map(&:capitalize).join
+        if each
+          collection_klass = "#{singular_klass}Region"
+          singular_klass = singular_klass.sub(/s\z/, '')
+        end
+        singular_klass << 'Region'
 
         if each
-          @browser.elements(each).map do |element|
-            region = namespace.const_get(klass).new(@browser)
+          collection = @browser.elements(each).map do |element|
+            region = namespace.const_get(singular_klass).new(@browser)
             region.instance_variable_set(:@region_element, element)
             region.instance_exec do
               def region_element
@@ -50,12 +54,25 @@ module Watirsome
 
             region
           end
+
+          return collection unless namespace.const_defined?(collection_klass)
+
+          region = namespace.const_get(collection_klass).new(@browser)
+          region.instance_variable_set(:@region_collection, collection)
+          region.extend(Enumerable)
+          region.instance_exec do
+            def each(&block)
+              @region_collection.each(&block)
+            end
+          end
+
+          region
         else
-          namespace.const_get(klass).new(@browser)
+          namespace.const_get(singular_klass).new(@browser)
         end
       end
     end
-    # rubocop:enable Metrics/AbcSize, Metrics/BlockLength, Metrics/MethodLength
+    # rubocop:enable Metrics/AbcSize, Metrics/BlockLength, Metrics/MethodLength, Metrics/PerceivedComplexity, Metrics/LineLength
 
     def define_finder_method(region_name)
       finder_method_name = region_name.to_s.sub(/s\z/, '')

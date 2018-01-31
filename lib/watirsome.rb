@@ -194,6 +194,12 @@
 #     div :name, -> { region_element.div(class: 'name') }
 #   end
 #
+#   # You can skip defining this class if you want.
+#   # In this case, Watirsome will return Array<UserRegion>.
+#   class UsersRegion
+#     include Watirsome
+#   end
+#
 #   class Page
 #     include Watirsome
 #
