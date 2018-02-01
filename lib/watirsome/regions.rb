@@ -13,17 +13,18 @@ module Watirsome
     # Defines multiple regions accessor.
     #
     # @param [Symbol] region_name
+    # @param [Hash] within
     # @param [Hash] each
     #
-    def has_many(region_name, each:)
-      define_region_accessor(region_name, each: each)
+    def has_many(region_name, within: nil, each:)
+      define_region_accessor(region_name, within: within, each: each)
       define_finder_method(region_name)
     end
 
     private
 
     # rubocop:disable Metrics/AbcSize, Metrics/BlockLength, Metrics/MethodLength, Metrics/PerceivedComplexity
-    def define_region_accessor(region_name, each: nil)
+    def define_region_accessor(region_name, within: nil, each: nil)
       define_method(region_name) do
         class_path = self.class.name.split('::')
         namespace = if class_path.size > 1
@@ -43,7 +44,8 @@ module Watirsome
         singular_klass << 'Region'
 
         if each
-          collection = @browser.elements(each).map do |element|
+          scope = within ? @browser.element(within) : @browser
+          collection = scope.elements(each).map do |element|
             region = namespace.const_get(singular_klass).new(@browser)
             region.instance_variable_set(:@region_element, element)
             region.instance_exec do
@@ -59,10 +61,23 @@ module Watirsome
 
           region = namespace.const_get(collection_klass).new(@browser)
           region.instance_variable_set(:@region_collection, collection)
+          region.instance_variable_set(:@region_element, scope)
           region.extend(Enumerable)
           region.instance_exec do
             def each(&block)
               @region_collection.each(&block)
+            end
+
+            def region_element
+              @region_element
+            end
+          end
+          collection.each do |r|
+            r.instance_variable_set(:@parent, region)
+            r.instance_exec do
+              def parent
+                @parent
+              end
             end
           end
 

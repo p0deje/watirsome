@@ -198,6 +198,10 @@
 #   # In this case, Watirsome will return Array<UserRegion>.
 #   class UsersRegion
 #     include Watirsome
+#
+#     def count
+#       region_collection.size
+#     end
 #   end
 #
 #   class Page
@@ -207,10 +211,18 @@
 #   end
 #
 #   page = Page.new(@browser)
-#   page.users.map(&:name)               #=> @browser.elements(class: 'for-user').map(&:text)
+#
+#   # You can use collection region both as its own object and numerable.
+#   page.users.count       #=> @browser.elements(class: 'for-user').size
+#   page.users.map(&:name) #=> @browser.elements(class: 'for-user').map(&:text)
+#
+#   # You can search for particular regions in collection.
 #   page.user(name: 'John Smith 1').name #=> @browser.element(class: 'for-user', index: 0).text
 #   page.user(name: 'John Smith 2').name #=> @browser.element(class: 'for-user', index: 1).text
 #   page.user(name: 'John Smith 3')      #=> raise RuntimeError, "No user matching: #{{name: 'John Smith 3'}}."
+#
+#   # You can access parent collection region from children too.
+#   page.user(name: 'John Smith 1').parent.count #=> page.users.count
 #
 module Watirsome
   class << self
