@@ -23,7 +23,7 @@ module Watirsome
 
     private
 
-    # rubocop:disable Metrics/AbcSize, Metrics/BlockLength, Metrics/MethodLength, Metrics/PerceivedComplexity
+    # rubocop:disable Metrics/AbcSize, Metrics/BlockLength, Metrics/MethodLength, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
     def define_region_accessor(region_name, within: nil, each: nil)
       define_method(region_name) do
         class_path = self.class.name.split('::')
@@ -45,17 +45,22 @@ module Watirsome
 
         if each
           scope = within ? @browser.element(within) : @browser
-          collection = scope.elements(each).map do |element|
-            region = namespace.const_get(singular_klass).new(@browser)
-            region.instance_variable_set(:@region_element, element)
-            region.instance_exec do
-              def region_element
-                @region_element
-              end
-            end
 
-            region
-          end
+          collection = if scope.exists?
+                         scope.elements(each).map do |element|
+                           region = namespace.const_get(singular_klass).new(@browser)
+                           region.instance_variable_set(:@region_element, element)
+                           region.instance_exec do
+                             def region_element
+                               @region_element
+                             end
+                           end
+
+                           region
+                         end
+                       else
+                         []
+                       end
 
           return collection unless namespace.const_defined?(collection_klass)
 
@@ -87,7 +92,7 @@ module Watirsome
         end
       end
     end
-    # rubocop:enable Metrics/AbcSize, Metrics/BlockLength, Metrics/MethodLength, Metrics/PerceivedComplexity
+    # rubocop:enable Metrics/AbcSize, Metrics/BlockLength, Metrics/MethodLength, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
 
     def define_finder_method(region_name)
       finder_method_name = region_name.to_s.sub(/s\z/, '')
