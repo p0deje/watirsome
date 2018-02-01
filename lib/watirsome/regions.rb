@@ -22,7 +22,7 @@ module Watirsome
 
     private
 
-    # rubocop:disable Metrics/AbcSize, Metrics/BlockLength, Metrics/MethodLength, Metrics/PerceivedComplexity, Metrics/LineLength
+    # rubocop:disable Metrics/AbcSize, Metrics/BlockLength, Metrics/MethodLength, Metrics/PerceivedComplexity
     def define_region_accessor(region_name, each: nil)
       define_method(region_name) do
         class_path = self.class.name.split('::')
@@ -72,7 +72,7 @@ module Watirsome
         end
       end
     end
-    # rubocop:enable Metrics/AbcSize, Metrics/BlockLength, Metrics/MethodLength, Metrics/PerceivedComplexity, Metrics/LineLength
+    # rubocop:enable Metrics/AbcSize, Metrics/BlockLength, Metrics/MethodLength, Metrics/PerceivedComplexity
 
     def define_finder_method(region_name)
       finder_method_name = region_name.to_s.sub(/s\z/, '')
