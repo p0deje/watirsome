@@ -210,6 +210,39 @@
 #   page.user(name: 'John Smith 1').name #=> 'John Smith 1'
 #   page.user(name: 'John Smith 2').name #=> 'John Smith 2'
 #   page.user(name: 'John Smith 3')      #=> raise RuntimeError, "No user matching: #{{name: 'John Smith 3'}}."
+
+# @example Restrict collection regions to specific scope using Watir locator
+#   class UserRegion
+#     include Watirsome
+#
+#     div :name, -> { region_element.div(class: 'name') }
+#   end
+#
+#   class Page
+#     include Watirsome
+#
+#     has_many :users, within: {class: 'for-users'}, each: {class: ['!name']}
+#   end
+#
+#   page = Page.new(@browser)
+#   page.users.map(&:name) #=> ['John Smith 1', 'John Smith 2']
+#
+# @example Restrict collection regions to specific scope using Watir element
+#   class UserRegion
+#     include Watirsome
+#
+#     div :name, -> { region_element.div(class: 'name') }
+#   end
+#
+#   class Page
+#     include Watirsome
+#
+#     div :users, class: 'for-users'
+#     has_many :users, within: -> { users_div }, each: {class: ['!name']}
+#   end
+#
+#   page = Page.new(@browser)
+#   page.users.map(&:name) #=> ['John Smith 1', 'John Smith 2']
 #
 # @example Custom collection region class
 #   class UserRegion
@@ -241,7 +274,7 @@
 #   # You can access parent collection region from children too.
 #   page.user(name: 'John Smith 1').parent.two? #=> true
 #
-# @example Scopes in collection regions
+# @example Return collection region from itself
 #   class UserRegion
 #     include Watirsome
 #

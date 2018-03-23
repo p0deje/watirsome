@@ -55,7 +55,14 @@ module Watirsome
           end
         end
 
-        scope = within ? @browser.element(within) : @browser
+        scope = case within
+                when Proc
+                  instance_exec(&within)
+                when Hash
+                  @browser.element(within)
+                else
+                  @browser
+                end
 
         if each
           collection = if scope.exists?
