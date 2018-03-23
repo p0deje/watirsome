@@ -43,20 +43,24 @@ module Watirsome
         end
         singular_klass << 'Region'
 
-        if each
-          scope = within ? @browser.element(within) : @browser
+        region_class = namespace.const_get(singular_klass)
+        region_class.class_eval do
+          attr_reader :region_element
+          attr_accessor :parent
 
+          def initialize(browser, region_element, parent)
+            super(@browser)
+            @region_element = region_element
+            @parent = parent
+          end
+        end
+
+        scope = within ? @browser.element(within) : @browser
+
+        if each
           collection = if scope.exists?
                          scope.elements(each).map do |element|
-                           region = namespace.const_get(singular_klass).new(@browser)
-                           region.instance_variable_set(:@region_element, element)
-                           region.instance_exec do
-                             def region_element
-                               @region_element
-                             end
-                           end
-
-                           region
+                           region_class.new(@browser, element, self)
                          end
                        else
                          []
@@ -64,31 +68,32 @@ module Watirsome
 
           return collection unless namespace.const_defined?(collection_klass)
 
-          region = namespace.const_get(collection_klass).new(@browser)
-          region.instance_variable_set(:@region_collection, collection)
-          region.instance_variable_set(:@region_element, scope)
-          region.extend(Enumerable)
-          region.instance_exec do
+          region_collection_class = namespace.const_get(collection_klass)
+          region_collection_class.class_eval do
+            include Enumerable
+
+            attr_reader :region_element
+            attr_reader :region_collection
+
+            def initialize(browser, region_element, region_collection)
+              super(@browser)
+              @region_element = region_element
+              @region_collection = region_collection
+            end
+
             def each(&block)
-              @region_collection.each(&block)
-            end
-
-            def region_element
-              @region_element
-            end
-          end
-          collection.each do |r|
-            r.instance_variable_set(:@parent, region)
-            r.instance_exec do
-              def parent
-                @parent
-              end
+              region_collection.each(&block)
             end
           end
 
-          region
+          region_collection_instance = region_collection_class.new(@browser, scope, collection)
+          collection.each do |region|
+            region.parent = region_collection_instance
+          end
+
+          region_collection_instance
         else
-          namespace.const_get(singular_klass).new(@browser)
+          region_class.new(@browser, @browser, self)
         end
       end
     end

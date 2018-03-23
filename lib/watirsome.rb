@@ -150,10 +150,10 @@
 #   class ProfileRegion
 #     include Watirsome
 #
-#     attr_accessor :page_loaded
+#     attr_reader :page_loaded
 #
 #     def initialize_region
-#       self.page_loaded = true
+#       @page_loaded = true
 #     end
 #   end
 #
@@ -187,20 +187,42 @@
 #   page = Page.new(@browser)
 #   page.profile.name #=> 'John Smith'
 #
-# @example Multiple regions
+# @example Collection region
 #   class UserRegion
 #     include Watirsome
 #
 #     div :name, -> { region_element.div(class: 'name') }
 #   end
 #
-#   # You can skip defining this class if you want.
-#   # In this case, Watirsome will return Array<UserRegion>.
+#   class Page
+#     include Watirsome
+#
+#     has_many :users, each: {class: 'for-user'}
+#   end
+#
+#   page = Page.new(@browser)
+#
+#   # You can use collection region as an array.
+#   page.users.size        #=> 2
+#   page.users.map(&:name) #=> ['John Smith 1', 'John Smith 2']
+#
+#   # You can search for particular regions in collection.
+#   page.user(name: 'John Smith 1').name #=> 'John Smith 1'
+#   page.user(name: 'John Smith 2').name #=> 'John Smith 2'
+#   page.user(name: 'John Smith 3')      #=> raise RuntimeError, "No user matching: #{{name: 'John Smith 3'}}."
+#
+# @example Custom collection region class
+#   class UserRegion
+#     include Watirsome
+#
+#     div :name, -> { region_element.div(class: 'name') }
+#   end
+#
 #   class UsersRegion
 #     include Watirsome
 #
-#     def count
-#       region_collection.size
+#     def two?
+#       region_collection.size == 2
 #     end
 #   end
 #
@@ -212,17 +234,41 @@
 #
 #   page = Page.new(@browser)
 #
-#   # You can use collection region both as its own object and numerable.
-#   page.users.count       #=> @browser.elements(class: 'for-user').size
-#   page.users.map(&:name) #=> @browser.elements(class: 'for-user').map(&:text)
-#
-#   # You can search for particular regions in collection.
-#   page.user(name: 'John Smith 1').name #=> @browser.element(class: 'for-user', index: 0).text
-#   page.user(name: 'John Smith 2').name #=> @browser.element(class: 'for-user', index: 1).text
-#   page.user(name: 'John Smith 3')      #=> raise RuntimeError, "No user matching: #{{name: 'John Smith 3'}}."
+#   # You can use collection region both as its instance and enumerable.
+#   page.users.two?        #=> true
+#   page.users.map(&:name) #=> ['John Smith 1', 'John Smith 2']
 #
 #   # You can access parent collection region from children too.
-#   page.user(name: 'John Smith 1').parent.count #=> page.users.count
+#   page.user(name: 'John Smith 1').parent.two? #=> true
+#
+# @example Scopes in collection regions
+#   class UserRegion
+#     include Watirsome
+#
+#     div :name, -> { region_element.div(class: 'name') }
+#   end
+#
+#   class UsersRegion
+#     include Watirsome
+#
+#     def first_half
+#       self.class.new(@browser, region_element, region_collection.each_slice(1).to_a[0])
+#     end
+#
+#     def second_half
+#       self.class.new(@browser, region_element, region_collection.each_slice(1).to_a[1])
+#     end
+#   end
+#
+#   class Page
+#     include Watirsome
+#
+#     has_many :users, each: {class: 'for-user'}
+#   end
+#
+#   page = Page.new(@browser)
+#   page.users.first_half.map(&:name)  #=> ['John Smith 1']
+#   page.users.second_half.map(&:name) #=> ['John Smith 2']
 #
 module Watirsome
   class << self
