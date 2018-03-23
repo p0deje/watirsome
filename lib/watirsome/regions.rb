@@ -49,7 +49,7 @@ module Watirsome
           attr_accessor :parent
 
           def initialize(browser, region_element, parent)
-            super(@browser)
+            super(browser)
             @region_element = region_element
             @parent = parent
           end
@@ -76,7 +76,7 @@ module Watirsome
             attr_reader :region_collection
 
             def initialize(browser, region_element, region_collection)
-              super(@browser)
+              super(browser)
               @region_element = region_element
               @region_collection = region_collection
             end
