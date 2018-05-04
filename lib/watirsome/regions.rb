@@ -4,9 +4,10 @@ module Watirsome
     # Defines region accessor.
     #
     # @param [Symbol] region_name
+    # @param [Block] block
     #
-    def has_one(region_name)
-      define_region_accessor(region_name)
+    def has_one(region_name, &block)
+      define_region_accessor(region_name, &block)
     end
 
     #
@@ -15,16 +16,17 @@ module Watirsome
     # @param [Symbol] region_name
     # @param [Hash] within
     # @param [Hash] each
+    # @param [Block] block
     #
-    def has_many(region_name, within: nil, each:)
-      define_region_accessor(region_name, within: within, each: each)
+    def has_many(region_name, each:, within: nil, &block)
+      define_region_accessor(region_name, within: within, each: each, &block)
       define_finder_method(region_name)
     end
 
     private
 
     # rubocop:disable Metrics/AbcSize, Metrics/BlockLength, Metrics/MethodLength, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
-    def define_region_accessor(region_name, within: nil, each: nil)
+    def define_region_accessor(region_name, within: nil, each: nil, &block)
       define_method(region_name) do
         class_path = self.class.name.split('::')
         namespace = if class_path.size > 1
@@ -36,14 +38,20 @@ module Watirsome
                       raise "Cannot understand namespace from #{class_path}"
                     end
 
-        singular_klass = region_name.to_s.split('_').map(&:capitalize).join
-        if each
-          collection_klass = "#{singular_klass}Region"
-          singular_klass = singular_klass.sub(/s\z/, '')
+        if block_given?
+          region_class = Class.new
+          region_class.class_eval { include(Watirsome) }
+          region_class.class_eval(&block)
+        else
+          singular_klass = region_name.to_s.split('_').map(&:capitalize).join
+          if each
+            collection_klass = "#{singular_klass}Region"
+            singular_klass = singular_klass.sub(/s\z/, '')
+          end
+          singular_klass << 'Region'
+          region_class = namespace.const_get(singular_klass)
         end
-        singular_klass << 'Region'
 
-        region_class = namespace.const_get(singular_klass)
         region_class.class_eval do
           attr_reader :region_element
           attr_accessor :parent
@@ -73,7 +81,7 @@ module Watirsome
                          []
                        end
 
-          return collection unless namespace.const_defined?(collection_klass)
+          return collection if block_given? || !namespace.const_defined?(collection_klass)
 
           region_collection_class = namespace.const_get(collection_klass)
           region_collection_class.class_eval do
