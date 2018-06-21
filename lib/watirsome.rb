@@ -322,7 +322,7 @@
 #     end
 #
 #     def second_half
-#       self.class.new(@browser, region_element, region_collection.each_slice(1).to_a[1])
+#       self.class.new(@browser, region_element, @browser.divs(class: 'for-user').each_slice(1).to_a[1])
 #     end
 #   end
 #

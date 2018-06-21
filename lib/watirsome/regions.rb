@@ -53,8 +53,8 @@ module Watirsome
         end
 
         region_class.class_eval do
+          attr_reader :parent
           attr_reader :region_element
-          attr_accessor :parent
 
           def initialize(browser, region_element, parent)
             super(browser)
@@ -73,27 +73,26 @@ module Watirsome
                 end
 
         if each
-          collection = if scope.exists?
-                         scope.elements(each).map do |element|
-                           region_class.new(@browser, element, self)
-                         end
-                       else
-                         []
-                       end
-
-          return collection if block_given? || !namespace.const_defined?(collection_klass)
+          elements = (scope.exists? ? scope.elements(each) : [])
+          if block_given? || !namespace.const_defined?(collection_klass)
+            return elements.map { |element| region_class.new(@browser, element, self) }
+          end
 
           region_collection_class = namespace.const_get(collection_klass)
           region_collection_class.class_eval do
             include Enumerable
 
-            attr_reader :region_element
             attr_reader :region_collection
+            attr_reader :region_element
 
-            def initialize(browser, region_element, region_collection)
+            define_method(:initialize) do |browser, region_element, region_elements|
               super(browser)
               @region_element = region_element
-              @region_collection = region_collection
+              @region_collection = if region_elements.all? { |element| element.is_a?(Watir::Element) }
+                                     region_elements.map { |element| region_class.new(browser, element, self) }
+                                   else
+                                     region_elements
+                                   end
             end
 
             def each(&block)
@@ -101,12 +100,7 @@ module Watirsome
             end
           end
 
-          region_collection_instance = region_collection_class.new(@browser, scope, collection)
-          collection.each do |region|
-            region.parent = region_collection_instance
-          end
-
-          region_collection_instance
+          region_collection_class.new(@browser, scope, elements)
         else
           region_class.new(@browser, @browser, self)
         end
