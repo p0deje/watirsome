@@ -1,0 +1,24 @@
+<html lang="us">
+<head>
+  <meta charset="utf-8">
+  <title>Greeter</title>
+  <style>
+    body{
+      margin: 20px;
+    }
+    .clearBoth { clear:both; }
+  </style>
+  <script type="text/javascript">
+    const setName = () => {
+      let newName = document.querySelector("#name").value
+      document.querySelector("#greeted_name").innerText = newName
+    }
+  </script>
+</head>
+<body class="start_hidden">
+  <h1>Greeter app</h1>
+  <input id="name" /><button id="set_name" onclick="setName()">set</button>
+  <br />
+  <div id="greeting">Hello <span id="greeted_name">stranger</span>!</div>
+</body>
+</html>

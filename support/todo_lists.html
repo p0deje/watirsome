@@ -1,0 +1,92 @@
+
+<!doctype html>
+<html lang="us">
+<head>
+  <meta charset="utf-8">
+  <title>ToDo lists</title>
+  <style>
+    body{
+      margin: 20px;
+    }
+
+    a[role="rm"] {
+      font-size: smaller;
+      cursor: pointer;
+      color: #a22;
+      margin-left: 5px;
+    }
+
+    div[role="todo_list"] {
+      float: left;
+      margin: 20px;
+      width: 270px;
+    }
+
+    .clearBoth { clear:both; }
+  </style>
+  <script type="text/javascript">
+
+  let addItem = (e) => {
+    console.log(e)
+    let newText = e.parentNode.querySelector('input').value
+    if(newText == '') {
+      return
+    }
+    console.log(newText)
+    let ul = e.parentNode.querySelector('ul')
+    let newLi = document.createElement('li')
+    let nameSpan = document.createElement('span')
+    nameSpan.innerText = newText
+    nameSpan.setAttribute('role', 'name')
+    let rmA = document.createElement('a')
+    rmA.setAttribute('role', 'rm')
+    rmA.setAttribute('onclick', 'rmTodoItem(this)')
+    rmA.innerText = '[rm]'
+    newLi.appendChild(nameSpan)
+    newLi.appendChild(rmA)
+    ul.appendChild(newLi)
+    e.target.parentNode.querySelector('input').value = ''
+  }
+
+  const rmTodoItem = (e) => {
+    let li = e.parentNode
+    li.parentNode.removeChild(li)
+  }
+
+  </script>
+</head>
+<body>
+  <div id="todos_home" role="todo_list">
+    <div role="title">Home</div>
+    <input role="new_item" /><button role="add" onclick="addItem(this)">Add</button>
+    <ul>
+      <li><span role="name">Dishes</span><a role="rm" onclick="rmTodoItem(this)">[rm]</a></li>
+      <li><span role="name">Laundry</span><a role="rm" onclick="rmTodoItem(this)">[rm]</a></li>
+      <li><span role="name">Vacuum</span><a role="rm" onclick="rmTodoItem(this)">[rm]</a></li>
+    </ul>
+  </div>
+
+  <div id="todos_work" role="todo_list">
+    <div role="title">Work</div>
+    <input role="new_item" /><button role="add" onclick="addItem(this)">Add</button>
+    <ul>
+      <li><span role="name">Review the PR-1234</span><a role="rm" onclick="rmTodoItem(this)">[rm]</a></li>
+      <li><span role="name">Generate coverage report</span><a role="rm" onclick="rmTodoItem(this)">[rm]</a></li>
+      <li><span role="name">Update README.md</span><a role="rm" onclick="rmTodoItem(this)">[rm]</a></li>
+    </ul>
+  </div>
+
+  <div id="todos_groceries" role="todo_list">
+    <div role="title">Groceries</div>
+    <input role="new_item" /><button role="add" onclick="addItem(this)">Add</button>
+    <ul>
+      <li><span role="name">Bread</span><a role="rm" onclick="rmTodoItem(this)">[rm]</a></li>
+      <li><span role="name">Tomatos</span><a role="rm" onclick="rmTodoItem(this)">[rm]</a></li>
+      <li><span role="name">Green pesto</span><a role="rm" onclick="rmTodoItem(this)">[rm]</a></li>
+    </ul>
+  </div>
+
+  <br class="clearBoth" />
+
+</body>
+</html>

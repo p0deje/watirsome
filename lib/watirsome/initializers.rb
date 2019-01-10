@@ -5,8 +5,14 @@ module Watirsome
   # After page is initialized, iterates through region and initialize each of them.
   #
   module Initializers
-    def initialize(browser)
+    attr_reader :browser
+    attr_reader :region_element
+    attr_reader :parent
+
+    def initialize(browser, region_element = nil, parent = nil)
       @browser = browser
+      @region_element = region_element || browser
+      @parent = parent
       initialize_page if respond_to?(:initialize_page)
       initialize_region if respond_to?(:initialize_region)
       initialize_regions

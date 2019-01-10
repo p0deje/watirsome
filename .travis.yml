@@ -1,11 +1,11 @@
-sudo: false
 language: ruby
 rvm:
   - 2.3.0
+addons:
+  chrome: stable
 before_script:
-  - mkdir ~/.yard
-  - bundle exec yard config load_plugins true
-  - export DISPLAY=:99
-  - sh -e /etc/init.d/xvfb start
-  - support/travis.sh
-  - export PATH="$(pwd)/bin:$PATH"
+  - sudo apt-get install chromium-chromedriver
+  - sudo ln -s /usr/lib/chromium-browser/chromedriver /usr/bin/chromedriver
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  - sleep 3 # give xvfb some time to start
