@@ -183,7 +183,8 @@ module Watirsome
       private
 
       #
-      # Calls Watir browser instance to find element.
+      # Finds element relative to current `region_element`
+      # For top-level components it's Watir browser reference
       #
       # @param [Symbol] method Watir method
       # @param [Hash] watir_args Watir locators
@@ -192,11 +193,11 @@ module Watirsome
       #
       def grab_elements(method, watir_args, custom_args)
         if custom_args.empty?
-          @browser.__send__(method, watir_args)
+          region_element.__send__(method, watir_args)
         else
           plural = Watirsome.plural?(method)
           method = Watirsome.pluralize(method) unless plural
-          elements = @browser.__send__(method, watir_args)
+          elements = region_element.__send__(method, watir_args)
           custom_args.each do |k, v|
             elements.to_a.select! do |e|
               if e.public_method(:"#{k}?").arity.zero?

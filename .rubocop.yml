@@ -1,5 +1,5 @@
 Metrics/AbcSize:
-  Max: 17
+  Max: 18
 
 Metrics/LineLength:
   Enabled: false
@@ -9,6 +9,9 @@ Metrics/MethodLength:
 
 Metrics/ModuleLength:
   Max: 110
+
+Metrics/BlockLength:
+  ExcludedMethods: ['describe', 'context']
 
 Naming/PredicateName:
   Exclude:
