@@ -14,7 +14,7 @@ module InitializersSpec
 
     attr_reader :ready
 
-    URL = "data:text/html,#{File.read('support/greeter.html')}".freeze
+    URL = "file:///#{File.expand_path('support/greeter.html')}".freeze
 
     has_one :region, region_class: InitializedRegion
 

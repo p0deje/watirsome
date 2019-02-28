@@ -34,7 +34,7 @@ module HasManySpec
   class ToDoListPage
     include Watirsome
 
-    URL = "data:text/html,#{File.read('support/todo_lists.html')}".freeze
+    URL = "file:///#{File.expand_path('support/todo_lists.html')}".freeze
 
     has_many :todo_lists, region_class: ToDoList, each: { role: 'todo_list' }
     has_many :todo_list2s, each: { role: 'todo_list' }

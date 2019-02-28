@@ -2,7 +2,7 @@ module ElementsSpec
   class GreetingPage
     include Watirsome
 
-    URL = "data:text/html,#{File.read('support/greeter.html')}".freeze
+    URL = "file:///#{File.expand_path('support/greeter.html')}".freeze
 
     text_field :name, id: 'name'
     button :set, id: 'set_name'

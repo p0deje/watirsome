@@ -1,5 +1,5 @@
 module RegionInitializerOldApiSpec
-  URL = "data:text/html,#{File.read('support/doctest.html')}".freeze
+  URL = "file:///#{File.expand_path('support/doctest.html')}".freeze
 
   module HeaderRegion
     def initialize_region

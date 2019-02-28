@@ -1,5 +1,5 @@
 module CollectionRegionUsingClassSpec
-  URL = "data:text/html,#{File.read('support/doctest.html')}".freeze
+  URL = "file:///#{File.expand_path('support/doctest.html')}".freeze
 
   class UserRegion
     include Watirsome

@@ -20,7 +20,7 @@ module InheritanceSpec
   class ToDoListPageBase
     include Watirsome
 
-    URL = "data:text/html,#{File.read('support/todo_lists.html')}".freeze
+    URL = "file:///#{File.expand_path('support/todo_lists.html')}".freeze
     has_one :todo_list, region_class: ToDoList
   end
 
