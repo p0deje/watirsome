@@ -31,6 +31,12 @@ module HasOneSpec
         span :name, role: 'name'
       end
     end
+
+    has_one :home_todo_list, region_class: ToDoList, within: { id: 'todos_home' }
+
+    def home_todo_list
+      super.title
+    end
   end
 
   #############################################
@@ -69,6 +75,13 @@ module HasOneSpec
 
         expect(page.todo_list.item).to be_a ToDoListItem
         expect(page.todo_list.item.name).to eq 'Review the PR-1234'
+      end
+    end
+
+    it 'supports calling super' do
+      ToDoListPage.new(WatirHelper.browser).tap do |page|
+        page.browser.goto page.class::URL
+        expect(page.home_todo_list).to eq 'Home'
       end
     end
   end

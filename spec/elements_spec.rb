@@ -11,6 +11,12 @@ module ElementsSpec
     text_field :name2, -> { region_element.text_field(id: 'name') }
     button :set2, -> { region_element.button(id: 'set_name') }
     div :greeting2, -> { region_element.div(id: 'greeting') }
+
+    div :greeting3, id: 'greeting'
+
+    def greeting3
+      super.split(' ').first
+    end
   end
 
   RSpec.describe Watirsome do
@@ -73,6 +79,13 @@ module ElementsSpec
         page.set2
         expect(page.greeting2).to eq 'Hello Bob!'
         expect(page.set2_button).to be_a Watir::Button
+      end
+    end
+
+    it 'supports calling super' do
+      GreetingPage.new(WatirHelper.browser).tap do |page|
+        page.browser.goto page.class::URL
+        expect(page.greeting3).to eq 'Hello'
       end
     end
   end

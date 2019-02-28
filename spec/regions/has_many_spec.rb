@@ -44,6 +44,12 @@ module HasManySpec
     end
 
     has_many :wrapped_todo_lists, through: ToDoListCollection, class: ToDoList, each: { role: 'todo_list' }
+
+    has_many :home_todo_lists, region_class: ToDoList, each: { role: 'todo_list' }
+
+    def home_todo_lists
+      super.select { |todo_list| todo_list.title == 'Home' }
+    end
   end
 
   ######################################################
@@ -97,6 +103,13 @@ module HasManySpec
         expect(page.todo_lists.last.items.first).to be_a ToDoListItem
         expect(page.todo_lists.last.items.first.name).to eq 'Bread'
         expect(page.todo_lists.last.items.count).to eq 3
+      end
+    end
+
+    it 'supports calling super' do
+      ToDoListPage.new(WatirHelper.browser).tap do |page|
+        page.browser.goto page.class::URL
+        expect(page.home_todo_lists.count).to eq 1
       end
     end
   end

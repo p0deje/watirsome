@@ -53,13 +53,15 @@ module Watirsome
       #
       def define_element_accessor(name, method, *args, &block)
         watir_args, custom_args = extract_custom_args(method, args)
-        define_method "#{name}_#{method}" do |*opts|
-          if block_given?
-            instance_exec(*opts, &block)
-          else
-            grab_elements(method, watir_args, custom_args)
+        include(Module.new do
+          define_method "#{name}_#{method}" do |*opts|
+            if block_given?
+              instance_exec(*opts, &block)
+            else
+              grab_elements(method, watir_args, custom_args)
+            end
           end
-        end
+        end)
       end
 
       #
@@ -74,13 +76,15 @@ module Watirsome
       #
       def define_click_accessor(name, method, *args, &block)
         watir_args, custom_args = extract_custom_args(method, args)
-        define_method name do |*opts|
-          if block_given?
-            instance_exec(*opts, &block).click
-          else
-            grab_elements(method, watir_args, custom_args).click
+        include(Module.new do
+          define_method name do |*opts|
+            if block_given?
+              instance_exec(*opts, &block).click
+            else
+              grab_elements(method, watir_args, custom_args).click
+            end
           end
-        end
+        end)
       end
 
       #
@@ -99,23 +103,25 @@ module Watirsome
       #
       def define_read_accessor(name, method, *args, &block)
         watir_args, custom_args = extract_custom_args(method, args)
-        define_method name do |*opts|
-          element = if block_given?
-                      instance_exec(*opts, &block)
-                    else
-                      grab_elements(method, watir_args, custom_args)
-                    end
-          case method
-          when :text_field, :textarea
-            element.value
-          when :select_list
-            element.options.detect(&:selected?).text
-          when :checkbox, :radio
-            element.set?
-          else
-            element.text
+        include(Module.new do
+          define_method name do |*opts|
+            element = if block_given?
+                        instance_exec(*opts, &block)
+                      else
+                        grab_elements(method, watir_args, custom_args)
+                      end
+            case method
+            when :text_field, :textarea
+              element.value
+            when :select_list
+              element.options.detect(&:selected?).text
+            when :checkbox, :radio
+              element.set?
+            else
+              element.text
+            end
           end
-        end
+        end)
       end
 
       #
@@ -132,20 +138,22 @@ module Watirsome
       #
       def define_set_accessor(name, method, *args, &block)
         watir_args, custom_args = extract_custom_args(method, args)
-        define_method "#{name}=" do |*opts|
-          element = if block_given?
-                      instance_exec(&block)
-                    else
-                      grab_elements(method, watir_args, custom_args)
-                    end
-          if element.is_a?(Watir::Select)
-            element.select(*opts)
-          elsif element.respond_to?(:set)
-            element.set(*opts)
-          else
-            element.send_keys(*opts)
+        include(Module.new do
+          define_method "#{name}=" do |*opts|
+            element = if block_given?
+                        instance_exec(&block)
+                      else
+                        grab_elements(method, watir_args, custom_args)
+                      end
+            if element.is_a?(Watir::Select)
+              element.select(*opts)
+            elsif element.respond_to?(:set)
+              element.set(*opts)
+            else
+              element.send_keys(*opts)
+            end
           end
-        end
+        end)
       end
 
       #
