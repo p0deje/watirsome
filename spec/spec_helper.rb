@@ -1,6 +1,7 @@
 require 'watir'
 require 'pry'
 require_relative '../lib/watirsome'
+require 'webdrivers'
 
 class WatirHelper
   class << self
