@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 module RegionInitializerOldApiSpec
-  URL = "file:///#{File.expand_path('support/doctest.html')}".freeze
+  URL = "file:///#{File.expand_path('support/doctest.html')}"
 
   module HeaderRegion
     def initialize_region

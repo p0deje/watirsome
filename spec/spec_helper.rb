@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'watir'
 require 'pry'
 require_relative '../lib/watirsome'
