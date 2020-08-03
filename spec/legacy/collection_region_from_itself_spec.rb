@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 module CollectionRegionFromItselfSpec
-  URL = "file:///#{File.expand_path('support/doctest.html')}".freeze
+  URL = "file:///#{File.expand_path('support/doctest.html')}"
 
   class UserRegion
     include Watirsome

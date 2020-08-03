@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module ElementsSpec
   class GreetingPage
     include Watirsome
 
-    URL = "file:///#{File.expand_path('support/greeter.html')}".freeze
+    URL = "file:///#{File.expand_path('support/greeter.html')}"
 
     text_field :name, id: 'name'
     button :set, id: 'set_name'

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HasOneSpec
   class ToDoListItem
     include Watirsome
@@ -22,7 +24,7 @@ module HasOneSpec
   class ToDoListPage
     include Watirsome
 
-    URL = "file:///#{File.expand_path('support/todo_lists.html')}".freeze
+    URL = "file:///#{File.expand_path('support/todo_lists.html')}"
     has_one :todo_list, region_class: ToDoList, within: { id: 'todos_work' }
     has_one :todo_list_default, within: -> { browser.element(id: 'todos_work') }
     has_one :todo_list_inline, within: -> { region_element.element(id: 'todos_work') } do
@@ -33,6 +35,12 @@ module HasOneSpec
     end
 
     has_one :home_todo_list, region_class: ToDoList, within: { id: 'todos_home' }
+
+    has_one :movies_todo_list, within: { id: 'todos_movies', visible: true } do
+      has_many :items, each: { tag_name: :li } do
+        span :name, role: 'name'
+      end
+    end
 
     def home_todo_list
       super.title
@@ -82,6 +90,13 @@ module HasOneSpec
       ToDoListPage.new(WatirHelper.browser).tap do |page|
         page.browser.goto page.class::URL
         expect(page.home_todo_list).to eq 'Home'
+      end
+    end
+
+    it 'waits for the element scope' do
+      ToDoListPage.new(WatirHelper.browser).tap do |page|
+        page.browser.goto page.class::URL
+        expect(page.movies_todo_list.items.first.name).to eq 'The Shawshank Redemption'
       end
     end
   end

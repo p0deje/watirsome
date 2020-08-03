@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Watirsome do
   specify '.clickable?' do
     expect(Watirsome.clickable?(:button)).to eq true

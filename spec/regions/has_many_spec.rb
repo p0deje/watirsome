@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HasManySpec
   class ToDoListItem
     include Watirsome
@@ -34,7 +36,7 @@ module HasManySpec
   class ToDoListPage
     include Watirsome
 
-    URL = "file:///#{File.expand_path('support/todo_lists.html')}".freeze
+    URL = "file:///#{File.expand_path('support/todo_lists.html')}"
 
     has_many :todo_lists, region_class: ToDoList, each: { role: 'todo_list' }
     has_many :todo_list2s, each: { role: 'todo_list' }
@@ -59,9 +61,9 @@ module HasManySpec
       ToDoListPage.new(WatirHelper.browser).tap do |page|
         page.browser.goto page.class::URL
 
-        expect(page.todo_lists.last.class).to eq ToDoList
-        expect(page.todo_lists.last.title).to eq 'Groceries'
-        expect(page.todo_lists.count).to eq 3
+        expect(page.todo_lists[2].class).to eq ToDoList
+        expect(page.todo_lists[2].title).to eq 'Groceries'
+        expect(page.todo_lists.count).to eq 4
       end
     end
 
@@ -69,9 +71,9 @@ module HasManySpec
       ToDoListPage.new(WatirHelper.browser).tap do |page|
         page.browser.goto page.class::URL
 
-        expect(page.todo_list_inlines.count).to eq 3
-        expect(page.todo_list_inlines.last.title).to eq 'Groceries'
-        expect(page.todo_list_inlines.last.items.first.name).to eq 'Bread'
+        expect(page.todo_list_inlines.count).to eq 4
+        expect(page.todo_list_inlines[2].title).to eq 'Groceries'
+        expect(page.todo_list_inlines[2].items.first.name).to eq 'Bread'
       end
     end
 
@@ -80,9 +82,9 @@ module HasManySpec
         page.browser.goto page.class::URL
 
         expect(page.todo_list2s).to be_a TodoList2sRegion
-        expect(page.todo_list2s.region_collection.last).to be_a TodoList2Region
-        expect(page.todo_list2s.region_collection.last.title).to eq 'Groceries'
-        expect(page.todo_list2s.region_collection.count).to eq 3
+        expect(page.todo_list2s.region_collection[2]).to be_a TodoList2Region
+        expect(page.todo_list2s.region_collection[2].title).to eq 'Groceries'
+        expect(page.todo_list2s.region_collection.count).to eq 4
       end
     end
 
@@ -100,9 +102,9 @@ module HasManySpec
       ToDoListPage.new(WatirHelper.browser).tap do |page|
         page.browser.goto page.class::URL
 
-        expect(page.todo_lists.last.items.first).to be_a ToDoListItem
-        expect(page.todo_lists.last.items.first.name).to eq 'Bread'
-        expect(page.todo_lists.last.items.count).to eq 3
+        expect(page.todo_lists[2].items.first).to be_a ToDoListItem
+        expect(page.todo_lists[2].items.first.name).to eq 'Bread'
+        expect(page.todo_lists[2].items.count).to eq 3
       end
     end
 

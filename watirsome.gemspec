@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 $LOAD_PATH.push File.expand_path('lib', __dir__)
 require 'watirsome/version'
 
@@ -21,4 +23,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'rubocop'
+  s.add_development_dependency 'webdrivers'
 end

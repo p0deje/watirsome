@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Watirsome
   module Accessors
     SKIP_CUSTOM_SELECTORS = %i[visible].freeze

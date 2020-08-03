@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Watirsome
   module Regions
     #
@@ -81,7 +83,7 @@ module Watirsome
                   end
 
           if each
-            elements = (scope.exists? ? scope.elements(each) : [])
+            elements = scope.elements(each)
 
             if collection_class_name && namespace.const_defined?(collection_class_name)
               region_collection_class = namespace.const_get(collection_class_name)

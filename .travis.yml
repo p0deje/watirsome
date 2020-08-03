@@ -1,11 +1,7 @@
 language: ruby
 rvm:
-  - 2.3.0
+  - 2.7.1
+services:
+  - xvfb
 addons:
   chrome: stable
-before_script:
-  - sudo apt-get install chromium-chromedriver
-  - sudo ln -s /usr/lib/chromium-browser/chromedriver /usr/bin/chromedriver
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
-  - sleep 3 # give xvfb some time to start

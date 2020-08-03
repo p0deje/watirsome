@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module InitializersSpec
   class InitializedRegion
     include Watirsome
@@ -14,7 +16,7 @@ module InitializersSpec
 
     attr_reader :ready
 
-    URL = "file:///#{File.expand_path('support/greeter.html')}".freeze
+    URL = "file:///#{File.expand_path('support/greeter.html')}"
 
     has_one :region, region_class: InitializedRegion
 
