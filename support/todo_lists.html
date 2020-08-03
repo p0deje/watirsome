@@ -53,6 +53,10 @@
     li.parentNode.removeChild(li)
   }
 
+  function showMovies() {
+    document.getElementById("todos_movies").style.visibility = "visible";
+  }
+  setTimeout("showMovies()", 500);
   </script>
 </head>
 <body>
@@ -83,6 +87,16 @@
       <li><span role="name">Bread</span><a role="rm" onclick="rmTodoItem(this)">[rm]</a></li>
       <li><span role="name">Tomatos</span><a role="rm" onclick="rmTodoItem(this)">[rm]</a></li>
       <li><span role="name">Green pesto</span><a role="rm" onclick="rmTodoItem(this)">[rm]</a></li>
+    </ul>
+  </div>
+
+  <div id="todos_movies" role="todo_list" style="visibility: hidden">
+    <div role="title">Movies</div>
+    <input role="new_item" /><button role="add" onclick="addItem(this)">Add</button>
+    <ul>
+      <li><span role="name">The Shawshank Redemption</span></li>
+      <li><span role="name">The Godfather</span></li>
+      <li><span role="name">The Dark Knight</span></li>
     </ul>
   </div>
 
