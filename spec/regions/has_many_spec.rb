@@ -33,6 +33,13 @@ module HasManySpec
     end
   end
 
+  module WrappedTodoList2sRegion
+  end
+
+  class WrappedTodoList2Region
+    include Watirsome
+  end
+
   class ToDoListPage
     include Watirsome
 
@@ -46,7 +53,7 @@ module HasManySpec
     end
 
     has_many :wrapped_todo_lists, through: ToDoListCollection, class: ToDoList, each: { role: 'todo_list' }
-
+    has_many :wrapped_todo_list2s, through: ToDoListCollection, each: { role: 'todo_list' }
     has_many :home_todo_lists, region_class: ToDoList, each: { role: 'todo_list' }
 
     def home_todo_lists
@@ -95,6 +102,8 @@ module HasManySpec
         expect(page.wrapped_todo_lists).to be_a ToDoListCollection
         expect(page.wrapped_todo_lists.a_custom_method).to eq :value
         expect(page.wrapped_todo_lists.first).to be_a ToDoList
+
+        expect(page.wrapped_todo_list2s).to be_a ToDoListCollection
       end
     end
 

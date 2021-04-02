@@ -85,10 +85,10 @@ module Watirsome
           if each
             elements = scope.elements(each)
 
-            if collection_class_name && namespace.const_defined?(collection_class_name)
-              region_collection_class = namespace.const_get(collection_class_name)
-            elsif collection_class
+            if collection_class
               region_collection_class = collection_class
+            elsif collection_class_name && namespace.const_defined?(collection_class_name)
+              region_collection_class = namespace.const_get(collection_class_name)
             else
               return elements.map { |element| region_single_class.new(@browser, element, self) }
             end
