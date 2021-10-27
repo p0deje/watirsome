@@ -125,11 +125,13 @@ module Watirsome
       finder_method_name = region_name.to_s.sub(/s\z/, '')
       include(Module.new do
         define_method(finder_method_name) do |**opts|
-          __send__(region_name).find do |entity|
-            opts.all? do |key, value|
-              entity.__send__(key) == value
+          Watir::Wait.until(message: "No #{finder_method_name} matching: #{opts}.") do
+            __send__(region_name).find do |entity|
+              opts.all? do |key, value|
+                entity.__send__(key) == value
+              end
             end
-          end || raise("No #{finder_method_name} matching: #{opts}.")
+          end
         end
       end)
     end
